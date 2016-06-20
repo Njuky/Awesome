@@ -50,11 +50,10 @@ void ABaseCollectable::Tick( float DeltaTime )
 
 void ABaseCollectable::c_DropItem()
 {
-	RootComponent->SetVisibility(true, true);
-	enabled = true;
 	AC_PlayerController* tempController = Cast<AC_PlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
 	tempController->c_Inventory = NULL;
-	//tempController->DisableInput(tempController);
+	RootComponent->SetVisibility(true, true);
 	SetActorEnableCollision(true);
+	enabled = true;
 }
 

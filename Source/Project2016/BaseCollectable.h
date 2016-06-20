@@ -39,10 +39,10 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Default")
 		UCapsuleComponent* CapsuleComponent;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Default")
+	UPROPERTY(VisibleAnywhere, Category = "Default")
 		class USphereComponent* SphereComponent;
 
-	UPROPERTY(VisibleAnywhere, Category = "Default")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Default")
 		class UStaticMeshComponent *StaticMeshComponent;
 
 	// Called when the game starts or when spawned

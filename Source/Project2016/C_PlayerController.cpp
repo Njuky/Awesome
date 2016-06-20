@@ -41,7 +41,10 @@ bool AC_PlayerController::UpdateAlpha(float DeltaTime)
 void AC_PlayerController::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	if ((WasInputKeyJustPressed(EKeys::G) || WasInputKeyJustPressed(EKeys::Gamepad_FaceButton_Top) && c_Inventory->IsValidLowLevel())) {
-		c_Inventory->c_DropItem();
+	
+	if (WasInputKeyJustPressed(EKeys::G) || WasInputKeyJustPressed(EKeys::Gamepad_FaceButton_Top)) {
+		if (c_Inventory->IsValidLowLevel()) {
+			c_Inventory->c_DropItem();
+		}
 	}
 }
