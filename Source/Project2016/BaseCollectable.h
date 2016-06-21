@@ -21,7 +21,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Default")
 		FName supposedBowlTag;
 
-	UPROPERTY(VisibleDefaultsOnly, Category = "Default")
+	UPROPERTY(VisibleDefaultsOnly, Category = "Private")
 		APlayerController* playerControllerRef;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "TimeBased")
