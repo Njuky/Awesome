@@ -63,16 +63,6 @@ void ABaseCollectable::CollectObject()
 	}
 }
 
-void ABaseCollectable::OnOverlapBegin(AActor * OtherActor, UPrimitiveComponent * OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult)
-{
-	if (OtherActor && OtherActor == UGameplayStatics::GetPlayerCharacter(GetWorld(), 0))
-		enabled = false;
-}
-
-void ABaseCollectable::OnOverlapEnd(AActor * OtherActor, UPrimitiveComponent * OtherComp, int32 OtherBodyIndex)
-{
-}
-
 void ABaseCollectable::c_DropItem()
 {
 	AC_PlayerController* tempController = Cast<AC_PlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
