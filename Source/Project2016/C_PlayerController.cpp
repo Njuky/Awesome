@@ -47,4 +47,10 @@ void AC_PlayerController::Tick(float DeltaTime)
 			c_Inventory->c_DropItem();
 		}
 	}
+
+	if (WasInputKeyJustPressed(EKeys::F) || WasInputKeyJustPressed(EKeys::Gamepad_FaceButton_Right)){
+		if (c_TempInventory->IsValidLowLevel()) {
+			c_TempInventory->c_CollectItem();
+		}
+	}
 }

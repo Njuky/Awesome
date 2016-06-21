@@ -17,7 +17,6 @@ ABaseCollectable::ABaseCollectable()
 
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-
 }
 
 // Called when the game starts or when spawned
@@ -35,17 +34,43 @@ void ABaseCollectable::Tick( float DeltaTime )
 	//Set Actor Collision (on if enabled, off if disabled)
 	SetActorEnableCollision(enabled);
 
-	if (timeRelevant && enabled) {
+	//Enable / Disable Object
+	if (enabled) {
 		AC_PlayerController* tempController = Cast<AC_PlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
-		if (tempController->currentTime == supposedTime) {
-			SphereComponent->SetVisibility(true, true);
-			SetActorEnableCollision(true);
-		}else{
-			SphereComponent->SetVisibility(false, true);
-			SetActorEnableCollision(false);
+		if(timeRelevant){
+			if (tempController->currentTime == supposedTime) {
+				SphereComponent->SetVisibility(true, true);
+				SetActorEnableCollision(true);
+			}else{
+				SphereComponent->SetVisibility(false, true);
+				SetActorEnableCollision(false);
+			}
 		}
+	}else {
+		SphereComponent->SetVisibility(false, true);
+		SetActorEnableCollision(false);
+	}	
+}
+
+void ABaseCollectable::CollectObject()
+{
+	AC_PlayerController* tempController = Cast<AC_PlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
+	if (tempController->c_Inventory == NULL) {
+		StaticMeshComponent->SetVisibility(false, true);
+		SetActorEnableCollision(false);
+		tempController->c_Inventory = this;
+		enabled = false;
 	}
-		
+}
+
+void ABaseCollectable::OnOverlapBegin(AActor * OtherActor, UPrimitiveComponent * OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult)
+{
+	if (OtherActor && OtherActor == UGameplayStatics::GetPlayerCharacter(GetWorld(), 0))
+		enabled = false;
+}
+
+void ABaseCollectable::OnOverlapEnd(AActor * OtherActor, UPrimitiveComponent * OtherComp, int32 OtherBodyIndex)
+{
 }
 
 void ABaseCollectable::c_DropItem()
@@ -57,3 +82,14 @@ void ABaseCollectable::c_DropItem()
 	enabled = true;
 }
 
+void ABaseCollectable::c_CollectItem()
+{
+	if (timeRelevant) {
+		AC_PlayerController* tempController = Cast<AC_PlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
+		if (tempController->currentTime == supposedTime) {
+			CollectObject();
+		}
+	}else{
+		CollectObject();
+	}
+}

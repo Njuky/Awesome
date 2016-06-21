@@ -140,6 +140,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Default")
 		ABaseCollectable* c_Inventory;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Default")
+		ABaseCollectable* c_TempInventory;
+
 	//Functions
 	UFUNCTION(BlueprintCallable, Category = "TimewalkDefault")
 		bool UpdateAlpha(float DeltaTime);

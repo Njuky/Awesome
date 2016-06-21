@@ -24,25 +24,25 @@ public:
 	UPROPERTY(VisibleDefaultsOnly, Category = "Private")
 		APlayerController* playerControllerRef;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "TimeBased")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Default")
 		bool timeRelevant;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "TimeBased")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Default")
 		bool supposedTime;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "LastPlace")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Default")
 		bool bowl;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "LastPlace")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Default")
 		bool altar;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Default")
+	UPROPERTY(VisibleDefaultsOnly, Category = "Default")
 		UCapsuleComponent* CapsuleComponent;
 
 	UPROPERTY(VisibleAnywhere, Category = "Default")
 		class USphereComponent* SphereComponent;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Default")
+	UPROPERTY(VisibleDefaultsOnly, Category = "Default")
 		class UStaticMeshComponent *StaticMeshComponent;
 
 	// Called when the game starts or when spawned
@@ -51,8 +51,12 @@ public:
 	// Called every frame
 	virtual void Tick( float DeltaSeconds ) override;
 
+	void CollectObject();
+
 	//Functions
-	UFUNCTION(BlueprintCallable, Category = "TimewalkDefault")
+	UFUNCTION(BlueprintCallable, Category = "ItemFunction")
 		void c_DropItem();
 	
+	UFUNCTION(BlueprintCallable, Category = "ItemFunction")
+		void c_CollectItem();
 };
