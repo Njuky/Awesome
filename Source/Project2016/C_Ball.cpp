@@ -33,6 +33,7 @@ void AC_Ball::Tick(float DeltaTime)
 	}
 }
 
+//override collect function of parent class
 void AC_Ball::c_CollectItem()
 {
 	if (enabled) {
