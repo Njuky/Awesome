@@ -19,6 +19,9 @@ public:
 		bool enabled;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Default")
+		UTexture* itemIcon;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Default")
 		FName supposedBowlTag;
 
 	UPROPERTY(VisibleDefaultsOnly, Category = "Private")
@@ -29,6 +32,12 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Default")
 		bool supposedTime;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Default")
+		bool broken;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Default")
+		bool snail;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Default")
 		bool bowl;
@@ -58,5 +67,5 @@ public:
 		void c_DropItem();
 	
 	UFUNCTION(BlueprintCallable, Category = "ItemFunction")
-		void c_CollectItem();
+		virtual void c_CollectItem();
 };
