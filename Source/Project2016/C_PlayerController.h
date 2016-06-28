@@ -83,6 +83,13 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Lightning")
 		ADirectionalLight* ambLight;
 
+		//Sound
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Sound")
+		TArray<AAmbientSound*> ambSoundDay;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Sound")
+		TArray<AAmbientSound*> ambSoundNight;
+
 		//TimewalkDefault
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "TimewalkDefault")
 		bool init;

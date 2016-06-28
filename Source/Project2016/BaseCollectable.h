@@ -5,6 +5,8 @@
 #include "GameFramework/Actor.h"
 #include "BaseCollectable.generated.h"
 
+class AC_Bowl;
+
 UCLASS()
 class PROJECT2016_API ABaseCollectable : public AActor
 {
@@ -45,6 +47,10 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Default")
 		bool altar;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Default")
+		AC_Bowl* c_LastPlace;
+
+
 	UPROPERTY(VisibleDefaultsOnly, Category = "Default")
 		UCapsuleComponent* CapsuleComponent;
 
@@ -64,7 +70,7 @@ public:
 
 	//Functions
 	UFUNCTION(BlueprintCallable, Category = "ItemFunction")
-		void c_DropItem();
+		virtual void c_DropItem();
 	
 	UFUNCTION(BlueprintCallable, Category = "ItemFunction")
 		virtual void c_CollectItem();

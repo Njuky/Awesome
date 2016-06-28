@@ -20,5 +20,7 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "ItemFunction")
 	virtual void c_CollectItem() override;
-		
+
+	UFUNCTION(BlueprintCallable, Category = "ItemFunction")
+		virtual void c_DropItem();		
 };

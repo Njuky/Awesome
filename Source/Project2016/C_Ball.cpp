@@ -4,6 +4,7 @@
 #include "C_PlayerController.h"
 #include "C_Snail.h"
 #include "C_Ball.h"
+#include "C_Bowl.h"
 
 
 AC_Ball::AC_Ball() {
@@ -48,5 +49,19 @@ void AC_Ball::c_CollectItem()
 		}else {
 			CollectObject();
 		}
+	}
+}
+
+void AC_Ball::c_DropItem() {
+	AC_PlayerController* tempController = Cast<AC_PlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
+	if (c_LastPlace->IsValidLowLevel()) {
+		c_LastPlace->Interact();
+		tempController->c_Inventory = NULL;
+	}
+	else {
+		tempController->c_Inventory = NULL;
+		RootComponent->SetVisibility(true, true);
+		SetActorEnableCollision(true);
+		enabled = true;
 	}
 }
