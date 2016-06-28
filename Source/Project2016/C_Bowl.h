@@ -23,10 +23,10 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Default")
 		bool bowlExist = true;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Default")
-		bool c_solved = true;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Default")
+		bool c_solved = false;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Default")
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Default")
 		AC_PlayerController* pController_Ref;
 	
 	UPROPERTY(VisibleDefaultsOnly, Category = "Default")

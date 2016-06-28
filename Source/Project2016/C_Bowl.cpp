@@ -18,16 +18,6 @@ AC_Bowl::AC_Bowl()
 
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-
-	if (c_slot->IsValidLowLevel()) {
-		c_InsertedObject->SetVisibility(true, false);
-		c_InsertedObject->SetStaticMesh(c_slot->StaticMeshComponent->StaticMesh);
-		c_InsertedObject->SetMaterial(0, c_slot->StaticMeshComponent->GetMaterial(0));
-	}
-	else {
-		c_InsertedObject->SetVisibility(false, false);
-	}
-
 }
 
 // Called when the game starts or when spawned
@@ -36,7 +26,16 @@ void AC_Bowl::BeginPlay()
 	Super::BeginPlay();
 	pController_Ref = Cast<AC_PlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
 
-	
+	if (!c_slot == NULL) {
+		c_InsertedObject->SetVisibility(true, false);
+		c_InsertedObject->SetStaticMesh(c_slot->StaticMeshComponent->StaticMesh);
+		c_InsertedObject->SetMaterial(0, c_slot->StaticMeshComponent->GetMaterial(0));
+		if (c_slot->supposedBowlTag == c_supposedObjectTag)
+			c_solved = true;
+	}
+	else {
+		c_InsertedObject->SetVisibility(false, false);
+	}
 }
 
 // Called every frame
