@@ -39,9 +39,6 @@ public:
 		bool broken;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Default")
-		bool snail;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Default")
 		bool bowl;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Default")

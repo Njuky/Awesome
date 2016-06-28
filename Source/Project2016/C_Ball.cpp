@@ -35,23 +35,6 @@ void AC_Ball::Tick(float DeltaTime)
 }
 
 //override collect function of parent class
-void AC_Ball::c_CollectItem()
-{
-	if (enabled) {
-		AC_PlayerController* tempController = Cast<AC_PlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
-		if (broken) {
-			if (tempController->c_Inventory->IsValidLowLevel()) {
-				if (tempController->c_Inventory->GetClass()->IsChildOf(AC_Snail::StaticClass()) && snail) {
-					broken = false;
-					tempController->c_Inventory = NULL;
-				}
-			}
-		}else {
-			CollectObject();
-		}
-	}
-}
-
 void AC_Ball::c_DropItem() {
 	AC_PlayerController* tempController = Cast<AC_PlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
 	if (c_LastPlace->IsValidLowLevel()) {

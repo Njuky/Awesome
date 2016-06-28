@@ -17,16 +17,16 @@ public:
 	// Sets default values for this actor's properties
 	AC_Bowl();
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Default")
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "DefaultNotEditable")
 		bool c_CanInteract = false;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Default")
 		bool bowlExist = true;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Default")
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "DefaultNotEditable")
 		bool c_solved = false;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Default")
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "DefaultNotEditable")
 		AC_PlayerController* pController_Ref;
 	
 	UPROPERTY(VisibleDefaultsOnly, Category = "Default")
