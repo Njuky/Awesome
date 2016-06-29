@@ -54,7 +54,7 @@ public:
 	UPROPERTY(VisibleAnywhere, Category = "Default")
 		class USphereComponent* SphereComponent;
 
-	UPROPERTY(VisibleDefaultsOnly, Category = "Default")
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category = "Default")
 		class UStaticMeshComponent *StaticMeshComponent;
 
 	// Called when the game starts or when spawned
