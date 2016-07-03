@@ -67,6 +67,7 @@ void AC_Bowl::Interact() {
 					c_InsertedObject->SetStaticMesh(pController_Ref->c_Inventory->StaticMeshComponent->StaticMesh);
 					c_InsertedObject->SetMaterial(0, pController_Ref->c_Inventory->StaticMeshComponent->GetMaterial(0));
 					c_InsertedObject->SetVisibility(true, false);
+					pController_Ref->c_Inventory->flower = true;
 					c_slot = pController_Ref->c_Inventory;
 					pController_Ref->c_Inventory = NULL;
 					if (c_slot->supposedBowlTag == c_supposedObjectTag) {
@@ -78,6 +79,7 @@ void AC_Bowl::Interact() {
 					pController_Ref->c_Inventory = c_slot;
 					pController_Ref->c_Inventory->bowl = true;
 					pController_Ref->c_Inventory->c_LastPlace = this;
+					pController_Ref->c_Inventory->flower = false;
 					c_InsertedObject->SetVisibility(false, false);
 					c_slot = NULL;
 					c_solved = false;

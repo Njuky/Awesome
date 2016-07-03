@@ -23,8 +23,8 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Default")
 		bool bowlExist = true;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "DefaultNotEditable")
-		bool c_solved = false;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "DefaultNotEditable")
+		bool c_solved;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "DefaultNotEditable")
 		AC_PlayerController* pController_Ref;
@@ -60,5 +60,5 @@ public:
 	virtual void Tick( float DeltaSeconds ) override;
 
 	UFUNCTION(BlueprintCallable, Category = "ItemFunction")
-		void Interact();
+	virtual void Interact();
 };

@@ -42,10 +42,16 @@ public:
 		bool bowl;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Default")
+		bool flower;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Default")
 		bool altar;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Default")
 		AC_Bowl* c_LastPlace;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Default")
+		TSubclassOf<ABaseCollectable> supposedRepairObject;
 
 
 	UPROPERTY(VisibleDefaultsOnly, Category = "Default")

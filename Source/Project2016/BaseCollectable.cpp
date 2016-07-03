@@ -39,15 +39,19 @@ void ABaseCollectable::Tick( float DeltaTime )
 		AC_PlayerController* tempController = Cast<AC_PlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
 		if(timeRelevant){
 			if (tempController->currentTime == supposedTime) {
-				SphereComponent->SetVisibility(true, true);
+				RootComponent->SetVisibility(true, true);
 				SetActorEnableCollision(true);
 			}else{
-				SphereComponent->SetVisibility(false, true);
+				RootComponent->SetVisibility(false, true);
 				SetActorEnableCollision(false);
 			}
 		}
+		if (flower) {
+			RootComponent->SetVisibility(false, true);
+			SetActorEnableCollision(false);
+		}
 	}else {
-		SphereComponent->SetVisibility(false, true);
+		RootComponent->SetVisibility(false, true);
 		SetActorEnableCollision(false);
 	}	
 }
@@ -74,12 +78,23 @@ void ABaseCollectable::c_DropItem()
 
 void ABaseCollectable::c_CollectItem()
 {
-	if (timeRelevant) {
-		AC_PlayerController* tempController = Cast<AC_PlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
-		if (tempController->currentTime == supposedTime) {
+	AC_PlayerController* tempController = Cast<AC_PlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
+	if (broken) {
+		if (tempController->c_Inventory->IsValidLowLevel()) {
+			if (tempController->c_Inventory->GetClass()->IsChildOf(supposedRepairObject)) {
+				broken = false;
+				tempController->c_Inventory = NULL;
+			}
+		}
+	}
+	else {
+		if (timeRelevant) {
+			if (tempController->currentTime == supposedTime) {
+				CollectObject();
+			}
+		}
+		else {
 			CollectObject();
 		}
-	}else{
-		CollectObject();
 	}
 }
