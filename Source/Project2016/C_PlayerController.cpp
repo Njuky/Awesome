@@ -39,7 +39,7 @@ bool AC_PlayerController::UpdateAlpha(float DeltaTime)
 void AC_PlayerController::cPlaySound(USoundBase* sound)
 {
 	if(sound->IsValidLowLevel())
-		ClientPlaySound(sound, 1.0f, 1.0f);
+		ClientPlaySound(sound, fSoundVolume, 1.0f);
 }
 
 
@@ -50,17 +50,17 @@ void AC_PlayerController::Tick(float DeltaTime)
 	if (WasInputKeyJustPressed(EKeys::F) || WasInputKeyJustPressed(EKeys::Gamepad_FaceButton_Right)) {
 		if (c_Inventory->IsValidLowLevel() && bCanInteract) {
 			if (c_Inventory->c_sDrop->IsValidLowLevel() && !c_Inventory->bowl)
-				ClientPlaySound(c_Inventory->c_sDrop, 1.0f, 1.0f);
+				ClientPlaySound(c_Inventory->c_sDrop, fSoundVolume, 1.0f);
 			else if (c_sDrop->IsValidLowLevel() && !c_Inventory->bowl)
-				ClientPlaySound(c_sDrop, 1.0f, 1.0f);
+				ClientPlaySound(c_sDrop, fSoundVolume, 1.0f);
 
 			c_Inventory->c_DropItem();
 		}
 		else if (c_TempInventory->IsValidLowLevel()) {
 			if (c_TempInventory->c_sCollect->IsValidLowLevel())
-				ClientPlaySound(c_TempInventory->c_sCollect, 1.0f, 1.0f);
+				ClientPlaySound(c_TempInventory->c_sCollect, fSoundVolume, 1.0f);
 			else if (c_sCollect->IsValidLowLevel())
-				ClientPlaySound(c_sCollect, 1.0f, 1.0f);
+				ClientPlaySound(c_sCollect, fSoundVolume, 1.0f);
 
 			c_TempInventory->c_CollectItem();
 		}

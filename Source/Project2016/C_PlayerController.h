@@ -90,6 +90,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Sound")
 		TArray<AAmbientSound*> ambSoundNight;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Sound")
+		float fSoundVolume = 1.0f;
+
 		//TimewalkDefault
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "TimewalkDefault")
 		bool init;
@@ -144,7 +147,7 @@ public:
 		FLinearColor sceneColor;
 
 		//Default
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "TimewalkDefault")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Default")
 		bool bCanInteract;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Default")
