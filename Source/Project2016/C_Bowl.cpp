@@ -73,6 +73,9 @@ void AC_Bowl::Interact() {
 					if (c_slot->supposedBowlTag == c_supposedObjectTag) {
 						c_solved = true;
 					}
+
+					if (c_sPlaceObject->IsValidLowLevel())
+						pController_Ref->cPlaySound(c_sPlaceObject);
 				}
 			}else{
 				if (c_slot->IsValidLowLevel()) {
@@ -83,12 +86,18 @@ void AC_Bowl::Interact() {
 					c_InsertedObject->SetVisibility(false, false);
 					c_slot = NULL;
 					c_solved = false;
+
+					if (c_sPlaceObject->IsValidLowLevel())
+						pController_Ref->cPlaySound(c_sTakeObject);
 				}
 			}
 		}else{
 			if (pController_Ref->c_Inventory->GetClass()->IsChildOf(acceptedClassRepair)) {
 				bowlExist = true;
 				pController_Ref->c_Inventory = NULL;
+
+				if (c_sPlaceObject->IsValidLowLevel())
+					pController_Ref->cPlaySound(c_sPlaceObject);
 			}
 		}
 	}

@@ -26,6 +26,12 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "DefaultNotEditable")
 		bool c_solved;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Default")
+		USoundBase* c_sPlaceObject;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Default")
+		USoundBase* c_sTakeObject;
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "DefaultNotEditable")
 		AC_PlayerController* pController_Ref;
 	

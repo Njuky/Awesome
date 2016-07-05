@@ -36,20 +36,32 @@ bool AC_PlayerController::UpdateAlpha(float DeltaTime)
 	return returnBool;
 }
 
+void AC_PlayerController::cPlaySound(USoundBase* sound)
+{
+	if(sound->IsValidLowLevel())
+		ClientPlaySound(sound, 1.0f, 1.0f);
+}
+
 
 // Called every frame
 void AC_PlayerController::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	
-	if (WasInputKeyJustPressed(EKeys::G) || WasInputKeyJustPressed(EKeys::Gamepad_FaceButton_Top)) {
-		if (c_Inventory->IsValidLowLevel()) {
+	if (WasInputKeyJustPressed(EKeys::F) || WasInputKeyJustPressed(EKeys::Gamepad_FaceButton_Right)) {
+		if (c_Inventory->IsValidLowLevel() && bCanInteract) {
+			if (c_Inventory->c_sDrop->IsValidLowLevel() && !c_Inventory->bowl)
+				ClientPlaySound(c_Inventory->c_sDrop, 1.0f, 1.0f);
+			else if (c_sDrop->IsValidLowLevel() && !c_Inventory->bowl)
+				ClientPlaySound(c_sDrop, 1.0f, 1.0f);
+
 			c_Inventory->c_DropItem();
 		}
-	}
+		else if (c_TempInventory->IsValidLowLevel()) {
+			if (c_TempInventory->c_sCollect->IsValidLowLevel())
+				ClientPlaySound(c_TempInventory->c_sCollect, 1.0f, 1.0f);
+			else if (c_sCollect->IsValidLowLevel())
+				ClientPlaySound(c_sCollect, 1.0f, 1.0f);
 
-	if (WasInputKeyJustPressed(EKeys::F) || WasInputKeyJustPressed(EKeys::Gamepad_FaceButton_Right)){
-		if (c_TempInventory->IsValidLowLevel()) {
 			c_TempInventory->c_CollectItem();
 		}
 	}

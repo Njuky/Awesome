@@ -144,15 +144,27 @@ public:
 		FLinearColor sceneColor;
 
 		//Default
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "TimewalkDefault")
+		bool bCanInteract;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Default")
 		ABaseCollectable* c_Inventory;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Default")
 		ABaseCollectable* c_TempInventory;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Default")
+		USoundBase* c_sCollect;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Default")
+		USoundBase* c_sDrop;
+
 	//Functions
 	UFUNCTION(BlueprintCallable, Category = "TimewalkDefault")
 		bool UpdateAlpha(float DeltaTime);
+
+	UFUNCTION(BlueprintCallable, Category = "Default")
+		void cPlaySound(USoundBase* sound);
 
 	// Called every frame
 	virtual void Tick(float DeltaSeconds) override;

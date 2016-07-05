@@ -53,6 +53,12 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Default")
 		TSubclassOf<ABaseCollectable> supposedRepairObject;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Default")
+		USoundBase* c_sCollect;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Default")
+		USoundBase* c_sDrop;
+
 
 	UPROPERTY(VisibleDefaultsOnly, Category = "Default")
 		UCapsuleComponent* CapsuleComponent;
