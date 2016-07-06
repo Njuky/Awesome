@@ -53,7 +53,7 @@ void AC_Bowl::Tick(float DeltaTime)
 	}
 
 	if (c_CanInteract) {
-		if (pController_Ref->WasInputKeyJustPressed(EKeys::F) || pController_Ref->WasInputKeyJustPressed(EKeys::Gamepad_DPad_Right)) {
+		if (pController_Ref->WasInputKeyJustPressed(EKeys::F) || pController_Ref->WasInputKeyJustPressed(EKeys::Gamepad_FaceButton_Right)) {
 			Interact();
 		}
 	}
