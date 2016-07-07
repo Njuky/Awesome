@@ -63,7 +63,10 @@ void AC_Bowl::Interact() {
 	if (!pController_Ref->IsValidLowLevel()) 
 		return;
 	
-	pController_Ref->animationType = animationType;
+	if (pController_Ref->c_BowlRef->IsValidLowLevel())
+		pController_Ref->animationType = animationType;
+	else
+		InteractBowl();
 }
 
 void AC_Bowl::InteractBowl() {

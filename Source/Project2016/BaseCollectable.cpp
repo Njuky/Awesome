@@ -3,6 +3,7 @@
 #include "Project2016.h"
 #include "C_PlayerController.h"
 #include "BaseCollectable.h"
+#include "C_Bowl.h"
 
 
 // Sets default values
@@ -82,10 +83,15 @@ void ABaseCollectable::c_DropItem()
 	if (!tempController->IsValidLowLevel())
 		return;
 
-	tempController->c_Inventory = NULL;
-	RootComponent->SetVisibility(true, true);
-	SetActorEnableCollision(true);
-	enabled = true;
+	if (!bowl) {
+		tempController->c_Inventory = NULL;
+		RootComponent->SetVisibility(true, true);
+		SetActorEnableCollision(true);
+		enabled = true;
+	}else if(bowl){
+		c_LastPlace->c_slot = this;
+		tempController->c_Inventory = NULL;
+	}
 }
 
 void ABaseCollectable::c_CollectItem()

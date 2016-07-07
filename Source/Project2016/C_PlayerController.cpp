@@ -63,13 +63,8 @@ void AC_PlayerController::Tick(float DeltaTime)
 			c_Inventory->c_DropItem();
 		}//Collect item
 		else if (c_TempInventory->IsValidLowLevel()) {
-	//		if (c_TempInventory->c_sCollect->IsValidLowLevel())
-	//			ClientPlaySound(c_TempInventory->c_sCollect, fSoundVolume, 1.0f);
-	//		else if (c_sCollect->IsValidLowLevel())
-	//			ClientPlaySound(c_sCollect, fSoundVolume, 1.0f);
 
 			animationType = c_TempInventory->animationType;
-			//c_TempInventory->c_CollectItem();
 		}
 	}
 }

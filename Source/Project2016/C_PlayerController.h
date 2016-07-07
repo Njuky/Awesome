@@ -6,6 +6,7 @@
 #include "GameFramework/PlayerController.h"
 #include "C_PlayerController.generated.h"
 
+class AC_Bowl;
 
 UCLASS()
 class PROJECT2016_API AC_PlayerController : public APlayerController
@@ -152,6 +153,9 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Default")
 		uint8 animationType;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Default")
+		AC_Bowl* c_BowlRef;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Default")
 		ABaseCollectable* c_Inventory;
