@@ -27,6 +27,9 @@ public:
 		bool c_solved;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Default")
+		uint8 animationType = 2;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Default")
 		USoundBase* c_sPlaceObject;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Default")
@@ -64,7 +67,10 @@ public:
 	
 	// Called every frame
 	virtual void Tick( float DeltaSeconds ) override;
-
+	
 	UFUNCTION(BlueprintCallable, Category = "ItemFunction")
 	virtual void Interact();
+
+	UFUNCTION(BlueprintCallable, Category = "ItemFunction")
+	virtual void InteractBowl();
 };

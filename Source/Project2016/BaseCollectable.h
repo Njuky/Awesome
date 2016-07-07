@@ -24,6 +24,9 @@ public:
 		UTexture* itemIcon;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Default")
+		uint8 animationType;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Default")
 		FName supposedBowlTag;
 
 	UPROPERTY(VisibleDefaultsOnly, Category = "Private")

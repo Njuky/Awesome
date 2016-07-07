@@ -151,6 +151,9 @@ public:
 		bool bCanInteract;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Default")
+		uint8 animationType;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Default")
 		ABaseCollectable* c_Inventory;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Default")

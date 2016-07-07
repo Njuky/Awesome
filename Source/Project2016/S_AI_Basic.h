@@ -32,6 +32,9 @@ public:
 	UPROPERTY(VisibleAnywhere, Category = "Default")
 		class USphereComponent* SphereComponent;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Default")
+		bool hasWave = false;
+
 	UPROPERTY(EditAnywhere, BLueprintReadWrite, Category = "Default") bool active;
 	UPROPERTY(EditAnywhere, BLueprintReadWrite, Category = "Default") AS_AI_Basic* nextActor;
 

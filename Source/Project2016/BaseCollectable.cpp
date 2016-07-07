@@ -79,6 +79,7 @@ void ABaseCollectable::c_DropItem()
 void ABaseCollectable::c_CollectItem()
 {
 	AC_PlayerController* tempController = Cast<AC_PlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
+	//tempController->animationType = animationType;
 	if (broken) {
 		if (tempController->c_Inventory->IsValidLowLevel()) {
 			if (tempController->c_Inventory->GetClass()->IsChildOf(supposedRepairObject)) {

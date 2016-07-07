@@ -13,14 +13,19 @@ bool AC_PlayerController::UpdateAlpha(float DeltaTime)
 			returnBool = true;
 			if(!timeChanged)
 				if (currentTime) {
-					alpha = (timeButtonPressed - timewalkInitTime) / 2.5;
+					alpha = timeButtonPressed / timewalkRunTime;
 					alpha = 1 - FMath::Clamp(alpha, 0.0f, 1.0f);
+
+				//	alpha = (timeButtonPressed - timewalkInitTime) / 2.5;
+				//	alpha = 1 - FMath::Clamp(alpha, 0.0f, 1.0f);
 				}else{
-					alpha = (timeButtonPressed - timewalkInitTime) / 2.5;
+					alpha = timeButtonPressed / timewalkRunTime;
 					alpha = FMath::Clamp(alpha, 0.0f, 1.0f);
+				//	alpha = (timeButtonPressed - timewalkInitTime) / 2.5;
+				//	alpha = FMath::Clamp(alpha, 0.0f, 1.0f);
 				}
 		}
-	}else{
+	}else{//Player released button early
 		if (currentTime) {
 			if (alpha != 1) {
 				alpha += alphaRate;
@@ -47,22 +52,24 @@ void AC_PlayerController::cPlaySound(USoundBase* sound)
 void AC_PlayerController::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	//Drop item
 	if (WasInputKeyJustPressed(EKeys::F) || WasInputKeyJustPressed(EKeys::Gamepad_FaceButton_Right)) {
 		if (c_Inventory->IsValidLowLevel() && bCanInteract) {
 			if (c_Inventory->c_sDrop->IsValidLowLevel() && !c_Inventory->bowl)
 				ClientPlaySound(c_Inventory->c_sDrop, fSoundVolume, 1.0f);
 			else if (c_sDrop->IsValidLowLevel() && !c_Inventory->bowl)
 				ClientPlaySound(c_sDrop, fSoundVolume, 1.0f);
-
+			
 			c_Inventory->c_DropItem();
-		}
+		}//Collect item
 		else if (c_TempInventory->IsValidLowLevel()) {
 			if (c_TempInventory->c_sCollect->IsValidLowLevel())
 				ClientPlaySound(c_TempInventory->c_sCollect, fSoundVolume, 1.0f);
 			else if (c_sCollect->IsValidLowLevel())
 				ClientPlaySound(c_sCollect, fSoundVolume, 1.0f);
 
-			c_TempInventory->c_CollectItem();
+			animationType = c_TempInventory->animationType;
+			//c_TempInventory->c_CollectItem();
 		}
 	}
 }

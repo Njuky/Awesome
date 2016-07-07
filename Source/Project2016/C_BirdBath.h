@@ -44,5 +44,5 @@ public:
 	ABaseCollectable* c_slotBath;
 	
 //	UFUNCTION(BlueprintCallable, Category = "ItemFunction")
-//	virtual void Interact();
+//	virtual void Interact() override;
 };
