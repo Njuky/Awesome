@@ -4,7 +4,7 @@
 #include "C_PlayerController.h"
 
 //Updates alpha per tick
-bool AC_PlayerController::UpdateAlpha(float DeltaTime)
+bool AC_PlayerController::UpdateAlpha(float DeltaTime, float runTime)
 {
 	bool returnBool = false;
 	if (buttonPressed) {
@@ -13,13 +13,13 @@ bool AC_PlayerController::UpdateAlpha(float DeltaTime)
 			returnBool = true;
 			if(!timeChanged)
 				if (currentTime) {
-					alpha = timeButtonPressed / timewalkRunTime;
+					alpha = (timeButtonPressed - timewalkInitTime) / runTime;
 					alpha = 1 - FMath::Clamp(alpha, 0.0f, 1.0f);
 
 				//	alpha = (timeButtonPressed - timewalkInitTime) / 2.5;
 				//	alpha = 1 - FMath::Clamp(alpha, 0.0f, 1.0f);
 				}else{
-					alpha = timeButtonPressed / timewalkRunTime;
+					alpha = (timeButtonPressed - timewalkInitTime) / runTime;
 					alpha = FMath::Clamp(alpha, 0.0f, 1.0f);
 				//	alpha = (timeButtonPressed - timewalkInitTime) / 2.5;
 				//	alpha = FMath::Clamp(alpha, 0.0f, 1.0f);
@@ -63,10 +63,10 @@ void AC_PlayerController::Tick(float DeltaTime)
 			c_Inventory->c_DropItem();
 		}//Collect item
 		else if (c_TempInventory->IsValidLowLevel()) {
-			if (c_TempInventory->c_sCollect->IsValidLowLevel())
-				ClientPlaySound(c_TempInventory->c_sCollect, fSoundVolume, 1.0f);
-			else if (c_sCollect->IsValidLowLevel())
-				ClientPlaySound(c_sCollect, fSoundVolume, 1.0f);
+	//		if (c_TempInventory->c_sCollect->IsValidLowLevel())
+	//			ClientPlaySound(c_TempInventory->c_sCollect, fSoundVolume, 1.0f);
+	//		else if (c_sCollect->IsValidLowLevel())
+	//			ClientPlaySound(c_sCollect, fSoundVolume, 1.0f);
 
 			animationType = c_TempInventory->animationType;
 			//c_TempInventory->c_CollectItem();

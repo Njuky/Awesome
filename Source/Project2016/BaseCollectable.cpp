@@ -37,6 +37,10 @@ void ABaseCollectable::Tick( float DeltaTime )
 	//Enable / Disable Object
 	if (enabled) {
 		AC_PlayerController* tempController = Cast<AC_PlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
+
+		if (!tempController->IsValidLowLevel())
+			return;
+
 		if(timeRelevant){
 			if (tempController->currentTime == supposedTime) {
 				RootComponent->SetVisibility(true, true);
@@ -59,6 +63,10 @@ void ABaseCollectable::Tick( float DeltaTime )
 void ABaseCollectable::CollectObject()
 {
 	AC_PlayerController* tempController = Cast<AC_PlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
+
+	if (!tempController->IsValidLowLevel())
+		return;
+
 	if (tempController->c_Inventory == NULL) {
 		StaticMeshComponent->SetVisibility(false, true);
 		SetActorEnableCollision(false);
@@ -70,6 +78,10 @@ void ABaseCollectable::CollectObject()
 void ABaseCollectable::c_DropItem()
 {
 	AC_PlayerController* tempController = Cast<AC_PlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
+
+	if (!tempController->IsValidLowLevel())
+		return;
+
 	tempController->c_Inventory = NULL;
 	RootComponent->SetVisibility(true, true);
 	SetActorEnableCollision(true);
@@ -79,7 +91,15 @@ void ABaseCollectable::c_DropItem()
 void ABaseCollectable::c_CollectItem()
 {
 	AC_PlayerController* tempController = Cast<AC_PlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
-	//tempController->animationType = animationType;
+	
+	if (!tempController->IsValidLowLevel())
+		return;
+
+	if (tempController->c_TempInventory->c_sCollect->IsValidLowLevel())
+		tempController->cPlaySound(tempController->c_TempInventory->c_sCollect);
+	else if (tempController->c_sCollect->IsValidLowLevel())
+		tempController->cPlaySound(tempController->c_sCollect);
+
 	if (broken) {
 		if (tempController->c_Inventory->IsValidLowLevel()) {
 			if (tempController->c_Inventory->GetClass()->IsChildOf(supposedRepairObject)) {
@@ -90,12 +110,10 @@ void ABaseCollectable::c_CollectItem()
 	}
 	else {
 		if (timeRelevant) {
-			if (tempController->currentTime == supposedTime) {
+			if (tempController->currentTime == supposedTime) 
 				CollectObject();
-			}
 		}
-		else {
+		else
 			CollectObject();
-		}
 	}
 }

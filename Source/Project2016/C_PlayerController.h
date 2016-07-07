@@ -167,7 +167,7 @@ public:
 
 	//Functions
 	UFUNCTION(BlueprintCallable, Category = "TimewalkDefault")
-		bool UpdateAlpha(float DeltaTime);
+		bool UpdateAlpha(float DeltaTime, float runTime);
 
 	UFUNCTION(BlueprintCallable, Category = "Default")
 		void cPlaySound(USoundBase* sound);
