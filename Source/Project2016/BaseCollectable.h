@@ -86,4 +86,7 @@ public:
 	
 	UFUNCTION(BlueprintCallable, Category = "ItemFunction")
 		virtual void c_CollectItem();
+
+	UFUNCTION(BlueprintCallable, Category = "ItemFunction")
+		virtual void c_newDropItem();
 };

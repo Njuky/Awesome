@@ -53,6 +53,10 @@ void AC_PlayerController::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	//Drop item
+	if (WasInputKeyJustPressed(EKeys::Y))
+		if (c_Inventory->IsValidLowLevel() && bCanInteract)
+			c_Inventory->c_newDropItem();
+
 	if (WasInputKeyJustPressed(EKeys::F) || WasInputKeyJustPressed(EKeys::Gamepad_FaceButton_Right)) {
 		if (c_Inventory->IsValidLowLevel() && bCanInteract) {
 			if (c_Inventory->c_sDrop->IsValidLowLevel() && !c_Inventory->bowl)

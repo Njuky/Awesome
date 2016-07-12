@@ -24,47 +24,54 @@ ABaseCollectable::ABaseCollectable()
 void ABaseCollectable::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
+	if(SphereComponent == nullptr)
+		SphereComponent->DestroyComponent();
+
+	if (StaticMeshComponent == nullptr)
+		StaticMeshComponent->DestroyComponent();	
 }
 
 // Called every frame
-void ABaseCollectable::Tick( float DeltaTime )
+void ABaseCollectable::Tick(float DeltaTime)
 {
-	Super::Tick( DeltaTime );
+	Super::Tick(DeltaTime);
 
 	//Set Actor Collision (on if enabled, off if disabled)
 	SetActorEnableCollision(enabled);
 
 	//Enable / Disable Object
-	if (enabled) {
-		AC_PlayerController* tempController = Cast<AC_PlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
+	if (!enabled) {
+		RootComponent->SetVisibility(false, true);
+		SetActorEnableCollision(false);
+		return;
+	}
 
-		if (!tempController->IsValidLowLevel())
-			return;
+	AC_PlayerController* tempController = Cast<AC_PlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
+	if (!tempController->IsValidLowLevel())
+		return;
 
-		if(timeRelevant){
-			if (tempController->currentTime == supposedTime) {
-				RootComponent->SetVisibility(true, true);
-				SetActorEnableCollision(true);
-			}else{
-				RootComponent->SetVisibility(false, true);
-				SetActorEnableCollision(false);
-			}
+	if (timeRelevant) {
+		if (tempController->currentTime == supposedTime) {
+			RootComponent->SetVisibility(true, true);
+			SetActorEnableCollision(true);
 		}
-		if (flower) {
+		else {
 			RootComponent->SetVisibility(false, true);
 			SetActorEnableCollision(false);
 		}
-	}else {
-		RootComponent->SetVisibility(false, true);
-		SetActorEnableCollision(false);
-	}	
+	}
+
+	//if (flower) {
+	//	RootComponent->SetVisibility(false, true);
+	//	SetActorEnableCollision(false);
+	//}
+
 }
 
 void ABaseCollectable::CollectObject()
 {
 	AC_PlayerController* tempController = Cast<AC_PlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
-
 	if (!tempController->IsValidLowLevel())
 		return;
 
@@ -79,7 +86,6 @@ void ABaseCollectable::CollectObject()
 void ABaseCollectable::c_DropItem()
 {
 	AC_PlayerController* tempController = Cast<AC_PlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
-
 	if (!tempController->IsValidLowLevel())
 		return;
 
@@ -88,19 +94,31 @@ void ABaseCollectable::c_DropItem()
 		RootComponent->SetVisibility(true, true);
 		SetActorEnableCollision(true);
 		enabled = true;
+
 	}else if(bowl){
 		c_LastPlace->c_slot = this;
 		tempController->c_Inventory = NULL;
 	}
 }
 
-void ABaseCollectable::c_CollectItem()
+void ABaseCollectable::c_newDropItem()
 {
 	AC_PlayerController* tempController = Cast<AC_PlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
-	
 	if (!tempController->IsValidLowLevel())
 		return;
 
+	tempController->c_Inventory->SetActorLocation(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0)->GetActorLocation(), true);
+	tempController->c_Inventory = nullptr;
+	enabled = true;
+}
+
+void ABaseCollectable::c_CollectItem()
+{
+	AC_PlayerController* tempController = Cast<AC_PlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
+	if (!tempController->IsValidLowLevel())
+		return;
+
+	//Play Sound
 	if (tempController->c_TempInventory->c_sCollect->IsValidLowLevel())
 		tempController->cPlaySound(tempController->c_TempInventory->c_sCollect);
 	else if (tempController->c_sCollect->IsValidLowLevel())
