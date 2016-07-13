@@ -7,6 +7,13 @@
 
 class AC_Bowl;
 
+UENUM(BlueprintType)
+enum class ETimeEnum : uint8 {
+	VE_None		UMETA(DisplayName = "None"),
+	VE_Day		UMETA(DisplayName = "Day"),
+	VE_Night	UMETA(DisplayName = "Night")
+};
+
 UCLASS()
 class PROJECT2016_API ABaseCollectable : public AActor
 {
@@ -32,26 +39,26 @@ public:
 	UPROPERTY(VisibleDefaultsOnly, Category = "Private")
 		APlayerController* playerControllerRef;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Default")
-		bool timeRelevant;
+//	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Default")
+//		bool timeRelevant;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Default")
-		bool supposedTime;
+//	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Default")
+//		bool supposedTime;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Default")
-		bool broken;
+//	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Default")
+//		bool broken;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Default")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Eventually cut")
 		bool bowl;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Default")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Eventually cut")
 		bool flower;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Default")
-		bool altar;
+//	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Default")
+//		bool altar;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Default")
-		AC_Bowl* c_LastPlace;
+//	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Default")
+//		AC_Bowl* c_LastPlace;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Default")
 		TSubclassOf<ABaseCollectable> supposedRepairObject;
@@ -62,6 +69,14 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Default")
 		USoundBase* c_sDrop;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Default")
+		FName c_supposedObjectTag;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Default")
+		bool m_broken;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Default")
+		ETimeEnum m_supposedtimeenum;
 
 	UPROPERTY(VisibleDefaultsOnly, Category = "Default")
 		UCapsuleComponent* CapsuleComponent;
@@ -69,8 +84,14 @@ public:
 	UPROPERTY(VisibleAnywhere, Category = "Default")
 		class USphereComponent* SphereComponent;
 
+	UPROPERTY(VisibleAnywhere, Category = "Default")
+		class USphereComponent* m_outlinesphere;
+
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category = "Default")
 		class UStaticMeshComponent *StaticMeshComponent;
+
+	UPROPERTY(VisibleDefaultsOnly, Category = "Default")
+		class UStaticMeshComponent *C_BrokenMesh;
 
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -78,15 +99,29 @@ public:
 	// Called every frame
 	virtual void Tick( float DeltaSeconds ) override;
 
+	void SetMeshVisibility(bool visible);
+
 	void CollectObject();
 
 	//Functions
-	UFUNCTION(BlueprintCallable, Category = "ItemFunction")
-		virtual void c_DropItem();
+	//UFUNCTION(BlueprintCallable, Category = "ItemFunction")
+	//	virtual void c_DropItem();
 	
 	UFUNCTION(BlueprintCallable, Category = "ItemFunction")
 		virtual void c_CollectItem();
 
 	UFUNCTION(BlueprintCallable, Category = "ItemFunction")
 		virtual void c_newDropItem();
+
+	UFUNCTION(BlueprintCallable, Category = "Overlap")
+		virtual void OnOverlap(class UPrimitiveComponent* HitComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult);
+
+	UFUNCTION(BlueprintCallable, Category = "Overlap")
+		virtual void OnEndOverlap(class UPrimitiveComponent* HitComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
+
+	UFUNCTION(BlueprintCallable, Category = "Overlap")
+		virtual void OnOutline(class UPrimitiveComponent* HitComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult);
+
+	UFUNCTION(BlueprintCallable, Category = "Overlap")
+		virtual void OnEndOutline(class UPrimitiveComponent* HitComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
 };

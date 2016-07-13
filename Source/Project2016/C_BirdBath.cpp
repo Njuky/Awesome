@@ -8,8 +8,8 @@ AC_BirdBath::AC_BirdBath()
 {
 	c_BowlWater = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("c_BowlWater"));
 	c_InsertedObjectBath = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("c_InsertedObjectBath"));
-	c_BowlWater->AttachParent = RootComponent;
-	c_InsertedObjectBath->AttachParent = RootComponent;
+	c_BowlWater->SetupAttachment(RootComponent);
+	c_InsertedObjectBath->SetupAttachment(RootComponent);
 }
 
 void AC_BirdBath::Tick(float DeltaTime)

@@ -12,19 +12,16 @@ UCLASS()
 class PROJECT2016_API AC_PlayerController : public APlayerController
 {
 	GENERATED_BODY()
-	
-public:
-	// Sets default values for this actor's properties
-//	AC_PlayerController();
 
+public:
 	// Variables
-		//Dissolve
+	//Dissolve
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "DissolveVariables")
 		bool timeWalk;
-	
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "DissolveVariables")
 		bool currentTime;
-	
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "DissolveVariables")
 		float dissolve = 1.0f;
 
@@ -37,7 +34,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "DissolveVariables")
 		TArray<APointLight*> pointLights;
 
-		//ChangeColor
+	//ChangeColor
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ChangeColor")
 		FLinearColor baseColorMatTree_Night;
 
@@ -74,7 +71,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ChangeColor")
 		float waveEmissiveBush = 5.0f;
 
-		//Lightning
+	//Lightning
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Lightning")
 		APostProcessVolume* dayPPV;
 
@@ -84,7 +81,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Lightning")
 		ADirectionalLight* ambLight;
 
-		//Sound
+	//Sound
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Sound")
 		TArray<AAmbientSound*> ambSoundDay;
 
@@ -94,7 +91,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Sound")
 		float fSoundVolume = 1.0f;
 
-		//TimewalkDefault
+	//TimewalkDefault
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "TimewalkDefault")
 		bool init;
 
@@ -122,7 +119,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "TimewalkDefault")
 		int32 count = 0;
 
-		//TimewalkEffect
+	//TimewalkEffect
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "TimewalkEffect")
 		float line;
 
@@ -147,7 +144,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "TimewalkEffect")
 		FLinearColor sceneColor;
 
-		//Default
+	//Default
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Default")
 		bool bCanInteract;
 

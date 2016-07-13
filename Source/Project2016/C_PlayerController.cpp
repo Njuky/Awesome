@@ -15,14 +15,9 @@ bool AC_PlayerController::UpdateAlpha(float DeltaTime, float runTime)
 				if (currentTime) {
 					alpha = (timeButtonPressed - timewalkInitTime) / runTime;
 					alpha = 1 - FMath::Clamp(alpha, 0.0f, 1.0f);
-
-				//	alpha = (timeButtonPressed - timewalkInitTime) / 2.5;
-				//	alpha = 1 - FMath::Clamp(alpha, 0.0f, 1.0f);
 				}else{
 					alpha = (timeButtonPressed - timewalkInitTime) / runTime;
 					alpha = FMath::Clamp(alpha, 0.0f, 1.0f);
-				//	alpha = (timeButtonPressed - timewalkInitTime) / 2.5;
-				//	alpha = FMath::Clamp(alpha, 0.0f, 1.0f);
 				}
 		}
 	}else{//Player released button early
@@ -58,16 +53,10 @@ void AC_PlayerController::Tick(float DeltaTime)
 			c_Inventory->c_newDropItem();
 
 	if (WasInputKeyJustPressed(EKeys::F) || WasInputKeyJustPressed(EKeys::Gamepad_FaceButton_Right)) {
-		if (c_Inventory->IsValidLowLevel() && bCanInteract) {
-			if (c_Inventory->c_sDrop->IsValidLowLevel() && !c_Inventory->bowl)
-				ClientPlaySound(c_Inventory->c_sDrop, fSoundVolume, 1.0f);
-			else if (c_sDrop->IsValidLowLevel() && !c_Inventory->bowl)
-				ClientPlaySound(c_sDrop, fSoundVolume, 1.0f);
-			
-			c_Inventory->c_DropItem();
+		if (c_Inventory->IsValidLowLevel() && bCanInteract) {			
+			animationType = 1;
 		}//Collect item
 		else if (c_TempInventory->IsValidLowLevel()) {
-
 			animationType = c_TempInventory->animationType;
 		}
 	}

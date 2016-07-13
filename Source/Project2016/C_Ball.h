@@ -12,12 +12,7 @@ class PROJECT2016_API AC_Ball : public ABaseCollectable
 public:
 	AC_Ball();
 
-	// Called every frame
-	virtual void Tick(float DeltaSeconds) override;
+	//UFUNCTION(BlueprintCallable, Category = "ItemFunction")
+	//	virtual void c_DropItem();		
 
-	UPROPERTY(VisibleDefaultsOnly, Category = "Default")
-	class UStaticMeshComponent *C_BrokenMesh;
-
-	UFUNCTION(BlueprintCallable, Category = "ItemFunction")
-		virtual void c_DropItem();		
 };

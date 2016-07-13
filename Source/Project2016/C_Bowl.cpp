@@ -12,9 +12,9 @@ AC_Bowl::AC_Bowl()
 	c_BowlBroken = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("C_BowlBroken"));
 	c_InsertedObject = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("C_InsertedObject"));
 	RootComponent = c_CollisionSphere;
-	c_Bowl->AttachParent = RootComponent;
-	c_BowlBroken->AttachParent = RootComponent;
-	c_InsertedObject->AttachParent = RootComponent;
+	c_Bowl->SetupAttachment(RootComponent);
+	c_BowlBroken->SetupAttachment(RootComponent);
+	c_InsertedObject->SetupAttachment(RootComponent);
 
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
@@ -67,6 +67,8 @@ void AC_Bowl::Interact() {
 		pController_Ref->animationType = animationType;
 	else
 		InteractBowl();
+
+	
 }
 
 void AC_Bowl::InteractBowl() {
@@ -97,7 +99,7 @@ void AC_Bowl::InteractBowl() {
 			if (c_slot->IsValidLowLevel()) {
 				pController_Ref->c_Inventory = c_slot;
 				pController_Ref->c_Inventory->bowl = true; // WTF ?
-				pController_Ref->c_Inventory->c_LastPlace = this;
+//				pController_Ref->c_Inventory->c_LastPlace = this;
 				pController_Ref->c_Inventory->flower = false;
 				c_InsertedObject->SetVisibility(false, false);
 				c_slot = NULL;
