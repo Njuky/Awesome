@@ -57,7 +57,7 @@ void AC_PlayerController::Tick(float DeltaTime)
 			animationType = 1;
 		}//Collect item
 		else if (c_TempInventory->IsValidLowLevel()) {
-			animationType = c_TempInventory->animationType;
+			animationType = c_TempInventory->m_animationType;
 		}
 	}
 }

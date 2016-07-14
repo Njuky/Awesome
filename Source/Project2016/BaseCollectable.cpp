@@ -46,9 +46,10 @@ void ABaseCollectable::OnOverlap(class UPrimitiveComponent* HitComp, class AActo
 
 		if ((m_supposedtimeenum == ETimeEnum::VE_Day && !tempController->currentTime) ||
 			(m_supposedtimeenum == ETimeEnum::VE_Night && tempController->currentTime) ||
+			(m_supposedtimeenum == ETimeEnum::VE_Day_Broken && tempController->currentTime) ||
+			(m_supposedtimeenum == ETimeEnum::VE_Night_Broken && !tempController->currentTime) ||
 			 m_supposedtimeenum == ETimeEnum::VE_None) {
 
-		//	UGameplayStatics::GetPlayerController(GetWorld(), 0)->EnableInput;
 			tempController->c_TempInventory = this;
 			if (tempController->c_Inventory != nullptr)
 				tempController->bCanInteract = false;
@@ -114,7 +115,7 @@ void ABaseCollectable::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 
 	//Enable / Disable Object
-	if (!enabled) {
+	if (!m_enabled) {
 		SetMeshVisibility(false);
 		return;
 	}
@@ -176,7 +177,7 @@ void ABaseCollectable::SetMeshVisibility(bool visible)
 	RootComponent->SetVisibility(visible, true);
 	SetActorEnableCollision(visible);
 
-	if (!enabled)
+	if (!m_enabled)
 		return;
 
 	if (C_BrokenMesh != nullptr) {
@@ -191,9 +192,10 @@ void ABaseCollectable::CollectObject()
 		return;
 
 	if (tempController->c_Inventory == nullptr) {
-		enabled = false;
+		m_enabled = false;
 		SetMeshVisibility(false);
 		tempController->c_Inventory = this;
+		tempController->c_TempInventory = nullptr;
 	}
 }
 
@@ -207,14 +209,14 @@ void ABaseCollectable::c_newDropItem()
 	if (!tempCharacter->IsValidLowLevel())
 		return;
 
-	if (tempController->c_Inventory->c_sDrop->IsValidLowLevel())
-		tempController->cPlaySound(tempController->c_Inventory->c_sDrop);
-	else if (tempController->c_Inventory->c_sDrop->IsValidLowLevel())
-		tempController->cPlaySound(tempController->c_Inventory->c_sDrop);
+	if (tempController->c_Inventory->m_sDrop->IsValidLowLevel())
+		tempController->cPlaySound(tempController->c_Inventory->m_sDrop);
+	else if (tempController->c_sDrop->IsValidLowLevel())
+		tempController->cPlaySound(tempController->c_sDrop);
 
 	tempController->c_Inventory->SetActorLocation(tempCharacter->m_sphereComponent->GetComponentLocation(), true);
 	tempController->c_Inventory = nullptr;
-	enabled = true;
+	m_enabled = true;
 }
 
 void ABaseCollectable::c_CollectItem()
@@ -224,14 +226,14 @@ void ABaseCollectable::c_CollectItem()
 		return;
 
 	//Play Sound
-	if (tempController->c_TempInventory->c_sCollect->IsValidLowLevel())
-		tempController->cPlaySound(tempController->c_TempInventory->c_sCollect);
+	if (tempController->c_TempInventory->m_sCollect->IsValidLowLevel())
+		tempController->cPlaySound(tempController->c_TempInventory->m_sCollect);
 	else if (tempController->c_sCollect->IsValidLowLevel())
 		tempController->cPlaySound(tempController->c_sCollect);
 
 	if (m_broken) {
 		if (tempController->c_Inventory->IsValidLowLevel()) {
-			if (tempController->c_Inventory->GetClass()->IsChildOf(supposedRepairObject)) {
+			if (tempController->c_Inventory->GetClass()->IsChildOf(m_supposedRepairObject)) {
 				m_broken = false;
 				tempController->c_Inventory = nullptr;
 			}

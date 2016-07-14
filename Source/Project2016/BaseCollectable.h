@@ -27,16 +27,22 @@ public:
 
 	// Variables
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Default")
-		bool enabled;
+		bool m_enabled = true;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Default")
-		UTexture* itemIcon;
+		UTexture* m_itemIcon;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Default")
-		uint8 animationType;
+		bool m_broken = false;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Default")
-		FName supposedBowlTag;
+		uint8 m_animationType;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Default")
+		ETimeEnum m_supposedtimeenum;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Default")
+		FName m_supposedBowlTag;
 
 	UPROPERTY(VisibleDefaultsOnly, Category = "Private")
 		APlayerController* playerControllerRef;
@@ -48,22 +54,16 @@ public:
 		bool flower;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Default")
-		TSubclassOf<ABaseCollectable> supposedRepairObject;
+		TSubclassOf<ABaseCollectable> m_supposedRepairObject;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Default")
-		USoundBase* c_sCollect;
+		FName m_supposedObjectTag;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Default")
-		USoundBase* c_sDrop;
+		USoundBase* m_sCollect;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Default")
-		FName c_supposedObjectTag;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Default")
-		bool m_broken = true;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Default")
-		ETimeEnum m_supposedtimeenum;
+		USoundBase* m_sDrop;
 
 	UPROPERTY(VisibleDefaultsOnly, Category = "Default")
 		UCapsuleComponent* CapsuleComponent;

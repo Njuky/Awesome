@@ -30,7 +30,7 @@ void AC_Bowl::BeginPlay()
 		c_InsertedObject->SetVisibility(true, false);
 		c_InsertedObject->SetStaticMesh(c_slot->StaticMeshComponent->StaticMesh);
 		c_InsertedObject->SetMaterial(0, c_slot->StaticMeshComponent->GetMaterial(0));
-		if (c_slot->supposedBowlTag == c_supposedObjectTag)
+		if (c_slot->m_supposedBowlTag == c_supposedObjectTag)
 			c_solved = true;
 	}
 	else {
@@ -84,7 +84,7 @@ void AC_Bowl::InteractBowl() {
 				c_slot = pController_Ref->c_Inventory;
 				pController_Ref->c_Inventory = NULL;
 
-				if (c_slot->supposedBowlTag == c_supposedObjectTag)
+				if (c_slot->m_supposedBowlTag == c_supposedObjectTag)
 					c_solved = true;
 
 				if (c_sPlaceObject->IsValidLowLevel())
