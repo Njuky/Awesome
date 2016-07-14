@@ -138,6 +138,28 @@ void ABaseCollectable::Tick(float DeltaTime)
 			SetMeshVisibility(false);
 		break;
 	}
+	case ETimeEnum::VE_Day_Broken: {
+		if (!tempController->currentTime) {
+			m_broken = true;
+			SetMeshVisibility(false);
+		}
+		else {
+			m_broken = false;
+			SetMeshVisibility(true);
+		}
+		break;
+	}
+	case ETimeEnum::VE_Night_Broken: {
+		if (tempController->currentTime) {
+			m_broken = true;
+			SetMeshVisibility(false);
+		}
+		else {
+			m_broken = false;
+			SetMeshVisibility(true);
+		}
+		break;
+	}
 	case ETimeEnum::VE_None: {
 		SetMeshVisibility(true);
 		break;
@@ -158,7 +180,6 @@ void ABaseCollectable::SetMeshVisibility(bool visible)
 		return;
 
 	if (C_BrokenMesh != nullptr) {
-		m_broken = !visible;
 		C_BrokenMesh->SetVisibility(m_broken, false);
 	}
 }
@@ -175,24 +196,6 @@ void ABaseCollectable::CollectObject()
 		tempController->c_Inventory = this;
 	}
 }
-/*
-void ABaseCollectable::c_DropItem()
-{
-	AC_PlayerController* tempController = Cast<AC_PlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
-	if (!tempController->IsValidLowLevel())
-		return;
-
-	if (!bowl) {
-		tempController->c_Inventory = nullptr;
-		SetMeshVisibility(true);
-		enabled = true;
-
-	}else if(bowl){
-		c_LastPlace->c_slot = this;
-		tempController->c_Inventory = nullptr;
-	}
-}
-*/
 
 void ABaseCollectable::c_newDropItem()
 {
@@ -243,6 +246,16 @@ void ABaseCollectable::c_CollectItem()
 		}
 		case ETimeEnum::VE_Night: {
 			if (tempController->currentTime)
+				CollectObject();
+			break;
+		}
+		case ETimeEnum::VE_Day_Broken: {
+			if (tempController->currentTime)
+				CollectObject();
+			break;
+		}
+		case ETimeEnum::VE_Night_Broken: {
+			if (!tempController->currentTime)
 				CollectObject();
 			break;
 		}

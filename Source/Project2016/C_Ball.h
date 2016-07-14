@@ -11,8 +11,4 @@ class PROJECT2016_API AC_Ball : public ABaseCollectable
 	GENERATED_BODY()
 public:
 	AC_Ball();
-
-	//UFUNCTION(BlueprintCallable, Category = "ItemFunction")
-	//	virtual void c_DropItem();		
-
 };

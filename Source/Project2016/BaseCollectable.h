@@ -9,9 +9,11 @@ class AC_Bowl;
 
 UENUM(BlueprintType)
 enum class ETimeEnum : uint8 {
-	VE_None		UMETA(DisplayName = "None"),
-	VE_Day		UMETA(DisplayName = "Day"),
-	VE_Night	UMETA(DisplayName = "Night")
+	VE_None			UMETA(DisplayName = "None"),
+	VE_Day			UMETA(DisplayName = "Day"),
+	VE_Night		UMETA(DisplayName = "Night"),
+	VE_Day_Broken	UMETA(DisplayName = "Day Broken"),
+	VE_Night_Broken UMETA(DisplayName = "Night Broken")
 };
 
 UCLASS()
@@ -39,26 +41,11 @@ public:
 	UPROPERTY(VisibleDefaultsOnly, Category = "Private")
 		APlayerController* playerControllerRef;
 
-//	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Default")
-//		bool timeRelevant;
-
-//	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Default")
-//		bool supposedTime;
-
-//	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Default")
-//		bool broken;
-
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Eventually cut")
 		bool bowl;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Eventually cut")
 		bool flower;
-
-//	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Default")
-//		bool altar;
-
-//	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Default")
-//		AC_Bowl* c_LastPlace;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Default")
 		TSubclassOf<ABaseCollectable> supposedRepairObject;
@@ -73,7 +60,7 @@ public:
 		FName c_supposedObjectTag;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Default")
-		bool m_broken;
+		bool m_broken = true;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Default")
 		ETimeEnum m_supposedtimeenum;
@@ -103,10 +90,7 @@ public:
 
 	void CollectObject();
 
-	//Functions
-	//UFUNCTION(BlueprintCallable, Category = "ItemFunction")
-	//	virtual void c_DropItem();
-	
+	//Functions	
 	UFUNCTION(BlueprintCallable, Category = "ItemFunction")
 		virtual void c_CollectItem();
 

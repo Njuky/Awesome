@@ -15,19 +15,3 @@ AC_Ball::AC_Ball() {
 	m_outlinesphere->OnComponentBeginOverlap.AddDynamic(this, &ABaseCollectable::OnOutline);
 	m_outlinesphere->OnComponentEndOverlap.AddDynamic(this, &ABaseCollectable::OnEndOutline);
 }
-/*
-//override collect function of parent class
-void AC_Ball::c_DropItem() {
-	AC_PlayerController* tempController = Cast<AC_PlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
-	if (c_LastPlace->IsValidLowLevel()) {
-		c_LastPlace->Interact();
-		tempController->c_Inventory = NULL;
-	}
-	else {
-		tempController->c_Inventory = NULL;
-		RootComponent->SetVisibility(true, true);
-		SetActorEnableCollision(true);
-		enabled = true;
-	}
-}
-*/
