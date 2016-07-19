@@ -2,6 +2,7 @@
 
 #pragma once
 
+#include "C_MainCharacter.h"
 #include "GameFramework/Actor.h"
 #include "BaseCollectable.generated.h"
 
@@ -37,6 +38,9 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Default")
 		uint8 m_animationType;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Default")
+		EAnimationEnum m_animationTypeEnum;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Default")
 		ETimeEnum m_supposedtimeenum;
@@ -79,6 +83,8 @@ public:
 
 	UPROPERTY(VisibleDefaultsOnly, Category = "Default")
 		class UStaticMeshComponent *C_BrokenMesh;
+
+	AC_MainCharacter* m_charref;
 
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

@@ -3,6 +3,7 @@
 #pragma once
 
 #include "BaseCollectable.h"
+#include "C_MainCharacter.h"
 #include "GameFramework/PlayerController.h"
 #include "C_PlayerController.generated.h"
 
@@ -166,12 +167,17 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Default")
 		USoundBase* c_sDrop;
 
+	AC_MainCharacter* m_charref;
+
 	//Functions
 	UFUNCTION(BlueprintCallable, Category = "TimewalkDefault")
 		bool UpdateAlpha(float DeltaTime, float runTime);
 
 	UFUNCTION(BlueprintCallable, Category = "Default")
 		void cPlaySound(USoundBase* sound);
+
+	// Called when the game starts or when spawned
+	virtual void BeginPlay() override;
 
 	// Called every frame
 	virtual void Tick(float DeltaSeconds) override;

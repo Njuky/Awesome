@@ -2,6 +2,7 @@
 
 #pragma once
 
+#include "C_MainCharacter.h"
 #include "C_PlayerController.h"
 #include "GameFramework/Actor.h"
 #include "C_Bowl.generated.h"
@@ -28,6 +29,9 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Default")
 		uint8 animationType = 2;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Default")
+		EAnimationEnum m_animationTypeEnum;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Default")
 		USoundBase* c_sPlaceObject;
@@ -62,6 +66,8 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Default")
 		FName c_supposedObjectTag;
 
+	AC_MainCharacter* m_charref;
+
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 	
@@ -73,4 +79,11 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "ItemFunction")
 	virtual void InteractBowl();
+
+	UFUNCTION(BlueprintCallable, Category = "Overlap")
+		virtual void OnOverlap(class UPrimitiveComponent* HitComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult);
+
+	UFUNCTION(BlueprintCallable, Category = "Overlap")
+		virtual void OnEndOverlap(class UPrimitiveComponent* HitComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
+
 };

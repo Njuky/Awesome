@@ -23,10 +23,24 @@ void AC_MainCharacter::BeginPlay()
 }
 
 // Called every frame
-void AC_MainCharacter::Tick( float DeltaTime )
+void AC_MainCharacter::Tick(float DeltaTime)
 {
-	Super::Tick( DeltaTime );
+	Super::Tick(DeltaTime);
 
+	switch (m_animation) {
+	case EAnimationEnum::VE_Walk:
+		m_allowmovement = true;
+		break;
+	case EAnimationEnum::VE_InteractLow:
+		m_allowmovement = false;
+		break;
+	case EAnimationEnum::VE_InteractHigh:
+		m_allowmovement = false;
+		break;
+	default:
+		m_allowmovement = false;
+		break;
+	}
 }
 
 // Called to bind functionality to input

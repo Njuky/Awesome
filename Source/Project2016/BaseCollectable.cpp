@@ -4,7 +4,6 @@
 #include "C_PlayerController.h"
 #include "BaseCollectable.h"
 #include "C_Bowl.h"
-#include "C_MainCharacter.h"
 
 // Sets default values
 ABaseCollectable::ABaseCollectable()
@@ -107,6 +106,10 @@ void ABaseCollectable::OnEndOutline(UPrimitiveComponent * HitComp, AActor * Othe
 void ABaseCollectable::BeginPlay()
 {
 	Super::BeginPlay();
+
+	m_charref = Cast<AC_MainCharacter>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
+	if (!m_charref->IsValidLowLevel())
+		m_animationType = 99;
 }
 
 // Called every frame
@@ -125,21 +128,19 @@ void ABaseCollectable::Tick(float DeltaTime)
 		return;
 
 	switch (m_supposedtimeenum) {
-	case ETimeEnum::VE_Day: {
-		if (!tempController->currentTime) 
+	case ETimeEnum::VE_Day:
+		if (!tempController->currentTime)
 			SetMeshVisibility(true);
 		else
 			SetMeshVisibility(false);
 		break;
-	}
-	case ETimeEnum::VE_Night: {
+	case ETimeEnum::VE_Night:
 		if (tempController->currentTime)
 			SetMeshVisibility(true);
 		else
 			SetMeshVisibility(false);
 		break;
-	}
-	case ETimeEnum::VE_Day_Broken: {
+	case ETimeEnum::VE_Day_Broken:
 		if (!tempController->currentTime) {
 			m_broken = true;
 			SetMeshVisibility(false);
@@ -149,8 +150,7 @@ void ABaseCollectable::Tick(float DeltaTime)
 			SetMeshVisibility(true);
 		}
 		break;
-	}
-	case ETimeEnum::VE_Night_Broken: {
+	case ETimeEnum::VE_Night_Broken:
 		if (tempController->currentTime) {
 			m_broken = true;
 			SetMeshVisibility(false);
@@ -160,15 +160,12 @@ void ABaseCollectable::Tick(float DeltaTime)
 			SetMeshVisibility(true);
 		}
 		break;
-	}
-	case ETimeEnum::VE_None: {
+	case ETimeEnum::VE_None:
 		SetMeshVisibility(true);
 		break;
-	}
-	default: {
+	default:
 		SetMeshVisibility(false);
 		break;
-	}
 	}
 }
 
@@ -181,6 +178,7 @@ void ABaseCollectable::SetMeshVisibility(bool visible)
 		return;
 
 	if (C_BrokenMesh != nullptr) {
+		RootComponent->SetVisibility(!m_broken, true);
 		C_BrokenMesh->SetVisibility(m_broken, false);
 	}
 }

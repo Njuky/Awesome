@@ -42,22 +42,27 @@ void AC_PlayerController::cPlaySound(USoundBase* sound)
 		ClientPlaySound(sound, fSoundVolume, 1.0f);
 }
 
+// Called when the game starts or when spawned
+void AC_PlayerController::BeginPlay()
+{
+	Super::BeginPlay();
+
+	m_charref = Cast<AC_MainCharacter>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
+}
 
 // Called every frame
 void AC_PlayerController::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	//Drop item
-	if (WasInputKeyJustPressed(EKeys::Y))
-		if (c_Inventory->IsValidLowLevel() && bCanInteract)
-			c_Inventory->c_newDropItem();
-
 	if (WasInputKeyJustPressed(EKeys::F) || WasInputKeyJustPressed(EKeys::Gamepad_FaceButton_Right)) {
-		if (c_Inventory->IsValidLowLevel() && bCanInteract) {			
-			animationType = 1;
+		if (c_Inventory->IsValidLowLevel() && bCanInteract) {
+			if (m_charref->IsValidLowLevel())
+				m_charref->m_animation = EAnimationEnum::VE_InteractLow;
 		}//Collect item
 		else if (c_TempInventory->IsValidLowLevel()) {
-			animationType = c_TempInventory->m_animationType;
+			if (m_charref->IsValidLowLevel())
+				m_charref->m_animation = c_TempInventory->m_animationTypeEnum;
 		}
 	}
 }
