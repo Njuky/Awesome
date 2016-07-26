@@ -75,10 +75,13 @@ public:
 	virtual void Tick( float DeltaSeconds ) override;
 	
 	UFUNCTION(BlueprintCallable, Category = "ItemFunction")
-	virtual void Interact();
+		virtual void Interact();
+	
+	UFUNCTION(BlueprintCallable, Category = "ItemFunction")
+		virtual void InteractBowl();
 
 	UFUNCTION(BlueprintCallable, Category = "ItemFunction")
-	virtual void InteractBowl();
+		virtual void RefreshSlot();
 
 	UFUNCTION(BlueprintCallable, Category = "Overlap")
 		virtual void OnOverlap(class UPrimitiveComponent* HitComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult);

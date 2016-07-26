@@ -4,6 +4,8 @@
 #include "C_PlayerController.h"
 #include "BaseCollectable.h"
 #include "C_Bowl.h"
+#include "C_SaveGameData.h"
+#include "Kismet/GameplayStatics.h"
 
 // Sets default values
 ABaseCollectable::ABaseCollectable()
@@ -110,6 +112,8 @@ void ABaseCollectable::BeginPlay()
 	m_charref = Cast<AC_MainCharacter>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
 	if (!m_charref->IsValidLowLevel())
 		m_animationType = 99;
+
+//	UpdateSaveGameData();
 }
 
 // Called every frame

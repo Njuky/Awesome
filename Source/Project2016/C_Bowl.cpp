@@ -115,13 +115,10 @@ void AC_Bowl::InteractBowl() {
 	if (bowlExist) {//place object
 		if (pController_Ref->c_Inventory->IsValidLowLevel()) {
 			if (pController_Ref->c_Inventory->GetClass()->IsChildOf(acceptedClass) && !c_slot->IsValidLowLevel()) {
-				c_InsertedObject->SetStaticMesh(pController_Ref->c_Inventory->StaticMeshComponent->StaticMesh);
-				c_InsertedObject->SetMaterial(0, pController_Ref->c_Inventory->StaticMeshComponent->GetMaterial(0));
-				c_InsertedObject->SetVisibility(true, false);
-				c_InsertedObject->SetRenderCustomDepth(false);
 				pController_Ref->c_Inventory->StaticMeshComponent->SetRenderCustomDepth(false);
 				c_slot = pController_Ref->c_Inventory;
 				pController_Ref->c_Inventory = NULL;
+				RefreshSlot();
 
 				if (c_slot->m_supposedBowlTag == c_supposedObjectTag)
 					c_solved = true;
@@ -157,3 +154,13 @@ void AC_Bowl::InteractBowl() {
 	}
 }
 
+void AC_Bowl::RefreshSlot() {
+	if (c_slot->IsValidLowLevel()) {
+		c_InsertedObject->SetStaticMesh(c_slot->StaticMeshComponent->StaticMesh);
+		c_InsertedObject->SetMaterial(0, c_slot->StaticMeshComponent->GetMaterial(0));
+		c_InsertedObject->SetVisibility(true, false);
+		c_InsertedObject->SetRenderCustomDepth(false);
+	}
+	else
+		c_InsertedObject->SetVisibility(false, false);
+}
