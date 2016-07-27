@@ -4,6 +4,6 @@
 #include "C_SaveGameData.h"
 
 UC_SaveGameData::UC_SaveGameData() {
-	SaveSlotName = TEXT("TestSaveSlot");
+	SaveSlotName = TEXT("LPN_Save");
 	UserIndex = 0;
 }
