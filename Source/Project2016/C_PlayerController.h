@@ -9,6 +9,14 @@
 
 class AC_Bowl;
 
+UENUM(BlueprintType)
+enum class EInteractEnum : uint8 {
+	VE_Collect		UMETA(DisplayName = "Collect Item"),
+	VE_Drop			UMETA(DisplayName = "Drop Item"),
+	VE_Interact		UMETA(DisplayName = "Interact Bowl"),
+	VE_All			UMETA(DisplayName = "Check All")
+};
+
 UCLASS()
 class PROJECT2016_API AC_PlayerController : public APlayerController
 {
@@ -172,6 +180,9 @@ public:
 	//Functions
 	UFUNCTION(BlueprintCallable, Category = "TimewalkDefault")
 		bool UpdateAlpha(float DeltaTime, float runTime);
+
+	UFUNCTION(BlueprintCallable, Category = "TimewalkDefault")
+		void HandleItem(EInteractEnum interactEnum);
 
 	UFUNCTION(BlueprintCallable, Category = "Default")
 		void cPlaySound(USoundBase* sound);

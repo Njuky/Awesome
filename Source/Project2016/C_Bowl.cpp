@@ -89,25 +89,57 @@ void AC_Bowl::Tick(float DeltaTime)
 		c_BowlBroken->SetVisibility(true, false);
 	}
 
-	if (c_CanInteract) {
-		if (pController_Ref->WasInputKeyJustPressed(EKeys::F) || pController_Ref->WasInputKeyJustPressed(EKeys::Gamepad_FaceButton_Right)) {
-			Interact();
+//	if (c_CanInteract) {
+//		if (pController_Ref->WasInputKeyJustPressed(EKeys::F) || pController_Ref->WasInputKeyJustPressed(EKeys::Gamepad_FaceButton_Right)) {
+//			Interact();
+//		}
+//	}
+}
+
+
+ABaseCollectable* AC_Bowl::InteractBowlObject(ABaseCollectable* object) {
+
+	ABaseCollectable* returnValue = nullptr;
+
+	if (bowlExist) {
+		if (object->IsValidLowLevel()) {
+			if (object->GetClass()->IsChildOf(acceptedClass) && !c_slot->IsValidLowLevel()) {
+				c_slot = object;
+				returnValue = nullptr;
+				RefreshSlot();
+
+				if (c_slot->m_supposedBowlTag == c_supposedObjectTag)
+					c_solved = true;
+
+				//Play Sound here (c_sPlaceObject)
+			}
+		}
+		else {
+			if (c_slot == nullptr)
+				return nullptr;
+
+			if (c_slot->IsValidLowLevel()) {
+				returnValue = c_slot;
+				c_slot = nullptr;
+				c_solved = false;
+				RefreshSlot();
+
+				//play Sound here (c_sTakeObject)
+			}
 		}
 	}
+	else {
+		if (object->GetClass()->IsChildOf(acceptedClassRepair)) {
+			bowlExist = true;
+			returnValue = nullptr;
+
+			//play Sound here (c_sPlaceObject)
+		}
+	}
+	return returnValue;
 }
 
-void AC_Bowl::Interact() {
-	if (!pController_Ref->IsValidLowLevel()) 
-		return;
-	
-	if (pController_Ref->c_BowlRef->IsValidLowLevel())
-		m_charref->m_animation = m_animationTypeEnum;
-	else
-		InteractBowl();
-
-	
-}
-
+/*
 void AC_Bowl::InteractBowl() {
 	if (!pController_Ref->IsValidLowLevel())
 		return;
@@ -153,7 +185,7 @@ void AC_Bowl::InteractBowl() {
 		}
 	}
 }
-
+*/
 void AC_Bowl::RefreshSlot() {
 	if (c_slot->IsValidLowLevel()) {
 		c_InsertedObject->SetStaticMesh(c_slot->StaticMeshComponent->StaticMesh);
