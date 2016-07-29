@@ -108,12 +108,6 @@ void ABaseCollectable::OnEndOutline(UPrimitiveComponent * HitComp, AActor * Othe
 void ABaseCollectable::BeginPlay()
 {
 	Super::BeginPlay();
-
-	m_charref = Cast<AC_MainCharacter>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
-	if (!m_charref->IsValidLowLevel())
-		m_animationType = 99;
-
-//	UpdateSaveGameData();
 }
 
 // Called every frame
@@ -131,21 +125,25 @@ void ABaseCollectable::Tick(float DeltaTime)
 	if (!tempController->IsValidLowLevel())
 		return;
 
+	CheckTime(tempController->currentTime);
+}
+
+void ABaseCollectable::CheckTime(bool currentTime) {
 	switch (m_supposedtimeenum) {
 	case ETimeEnum::VE_Day:
-		if (!tempController->currentTime)
+		if (!currentTime)
 			SetMeshVisibility(true);
 		else
 			SetMeshVisibility(false);
 		break;
 	case ETimeEnum::VE_Night:
-		if (tempController->currentTime)
+		if (currentTime)
 			SetMeshVisibility(true);
 		else
 			SetMeshVisibility(false);
 		break;
 	case ETimeEnum::VE_Day_Broken:
-		if (!tempController->currentTime) {
+		if (!currentTime) {
 			m_broken = true;
 			SetMeshVisibility(false);
 		}
@@ -155,7 +153,7 @@ void ABaseCollectable::Tick(float DeltaTime)
 		}
 		break;
 	case ETimeEnum::VE_Night_Broken:
-		if (tempController->currentTime) {
+		if (currentTime) {
 			m_broken = true;
 			SetMeshVisibility(false);
 		}
@@ -201,6 +199,18 @@ void ABaseCollectable::CollectObject()
 	}
 }
 
+ABaseCollectable* ABaseCollectable::CollectObject(ABaseCollectable* object)
+{
+	if (object == this) {
+		m_enabled = false;
+		SetMeshVisibility(false);
+		return this;
+	}
+
+	return object;
+
+}
+
 void ABaseCollectable::c_newDropItem()
 {
 	AC_PlayerController* tempController = Cast<AC_PlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
@@ -220,6 +230,54 @@ void ABaseCollectable::c_newDropItem()
 	tempController->c_Inventory = nullptr;
 	m_enabled = true;
 }
+
+ABaseCollectable* ABaseCollectable::c_InteractItem(ABaseCollectable* object, bool currentTime) {
+	// Play Sound here
+
+	if (m_broken) {
+		if (!object->IsValidLowLevel())
+			return nullptr;
+
+		if (object->GetClass()->IsChildOf(m_supposedRepairObject)) {
+			m_broken = false;
+			return nullptr;
+		}
+	}
+	else {
+		switch (m_supposedtimeenum) {
+		case ETimeEnum::VE_Day: {
+			if (!currentTime)
+				return CollectObject(object);
+			break;
+		}
+		case ETimeEnum::VE_Night: {
+			if (currentTime)
+				return CollectObject(object);
+			break;
+		}
+		case ETimeEnum::VE_Day_Broken: {
+			if (currentTime)
+				return CollectObject(object);
+			break;
+		}
+		case ETimeEnum::VE_Night_Broken: {
+			if (!currentTime)
+				return CollectObject(object);
+			break;
+		}
+		case ETimeEnum::VE_None: {
+			return CollectObject(object);
+			break;
+		}
+		default: {
+			SetMeshVisibility(false);
+			break;
+		}
+		}
+	}
+	return object;
+}
+
 
 void ABaseCollectable::c_CollectItem()
 {

@@ -2,6 +2,7 @@
 
 #include "Project2016.h"
 #include "C_PlayerController.h"
+#include "C_Bowl.h"
 
 //Updates alpha per tick
 bool AC_PlayerController::UpdateAlpha(float DeltaTime, float runTime)
@@ -54,15 +55,48 @@ void AC_PlayerController::BeginPlay()
 void AC_PlayerController::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	//Drop item
+
 	if (WasInputKeyJustPressed(EKeys::F) || WasInputKeyJustPressed(EKeys::Gamepad_FaceButton_Right)) {
+
+		if (!m_charref->IsValidLowLevel())
+			return;
+
+		// Drop Item
 		if (c_Inventory->IsValidLowLevel() && bCanInteract) {
-			if (m_charref->IsValidLowLevel())
-				m_charref->m_animation = EAnimationEnum::VE_InteractLow;
-		}//Collect item
+			m_charref->m_animation = EAnimationEnum::VE_InteractLow;
+		}// Collect item
 		else if (c_TempInventory->IsValidLowLevel()) {
-			if (m_charref->IsValidLowLevel())
-				m_charref->m_animation = c_TempInventory->m_animationTypeEnum;
+			m_charref->m_animation = c_TempInventory->m_animationTypeEnum;
+		}// Interact Bowl
+		else if (c_BowlRef->IsValidLowLevel()) {
+			m_charref->m_animation = c_BowlRef->m_animationTypeEnum;
 		}
+	}
+}
+
+void AC_PlayerController::HandleItem(EInteractEnum interactEnum) {
+	switch (interactEnum) {
+	case EInteractEnum::VE_Collect:
+		if (c_TempInventory->IsValidLowLevel())
+			c_Inventory = c_TempInventory->c_InteractItem(c_TempInventory, currentTime);
+		break;
+	case EInteractEnum::VE_Drop:
+		if (c_Inventory->IsValidLowLevel())
+			c_Inventory->c_newDropItem();
+		break;
+	case EInteractEnum::VE_Interact:
+		if (c_BowlRef->IsValidLowLevel())
+			c_Inventory = c_BowlRef->InteractBowlObject(c_Inventory);
+		break;
+	case EInteractEnum::VE_All:
+		if (c_TempInventory->IsValidLowLevel())
+			c_Inventory = c_TempInventory->c_InteractItem(c_TempInventory, currentTime);
+		else if (c_BowlRef->IsValidLowLevel())
+				c_Inventory = c_BowlRef->InteractBowlObject(c_Inventory);
+		else if (c_Inventory->IsValidLowLevel())
+				c_Inventory->c_newDropItem();
+		break;
+	default:
+		break;
 	}
 }

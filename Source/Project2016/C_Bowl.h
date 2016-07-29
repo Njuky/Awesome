@@ -74,11 +74,14 @@ public:
 	// Called every frame
 	virtual void Tick( float DeltaSeconds ) override;
 	
-	UFUNCTION(BlueprintCallable, Category = "ItemFunction")
-		virtual void Interact();
+//	UFUNCTION(BlueprintCallable, Category = "ItemFunction")
+//		virtual void Interact();
 	
+//	UFUNCTION(BlueprintCallable, Category = "ItemFunction")
+//		virtual void InteractBowl();
+
 	UFUNCTION(BlueprintCallable, Category = "ItemFunction")
-		virtual void InteractBowl();
+		ABaseCollectable* InteractBowlObject(ABaseCollectable* object);
 
 	UFUNCTION(BlueprintCallable, Category = "ItemFunction")
 		virtual void RefreshSlot();

@@ -33,9 +33,9 @@ void AC_BirdBath::Tick(float DeltaTime)
 		c_BowlWater->SetVisibility(true, false);
 	}
 
-	if (c_CanInteract) {
-		if (pController_Ref->WasInputKeyJustPressed(EKeys::F) || pController_Ref->WasInputKeyJustPressed(EKeys::Gamepad_DPad_Right)) {
-			Interact();
-		}
-	}
+//	if (c_CanInteract) {
+//		if (pController_Ref->WasInputKeyJustPressed(EKeys::F) || pController_Ref->WasInputKeyJustPressed(EKeys::Gamepad_DPad_Right)) {
+//			Interact();
+//		}
+//	}
 }

@@ -95,13 +95,20 @@ public:
 	void SetMeshVisibility(bool visible);
 
 	void CollectObject();
+	ABaseCollectable* CollectObject(ABaseCollectable* object);
 
 	//Functions	
 	UFUNCTION(BlueprintCallable, Category = "ItemFunction")
 		virtual void c_CollectItem();
 
 	UFUNCTION(BlueprintCallable, Category = "ItemFunction")
+		ABaseCollectable* c_InteractItem(ABaseCollectable* object, bool currentTime);
+
+	UFUNCTION(BlueprintCallable, Category = "ItemFunction")
 		virtual void c_newDropItem();
+
+	UFUNCTION(BlueprintCallable, Category = "ItemFunction")
+		virtual void CheckTime(bool currentTime);
 
 	UFUNCTION(BlueprintCallable, Category = "Overlap")
 		virtual void OnOverlap(class UPrimitiveComponent* HitComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult);
