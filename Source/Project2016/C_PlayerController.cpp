@@ -78,11 +78,11 @@ void AC_PlayerController::HandleItem(EInteractEnum interactEnum) {
 	switch (interactEnum) {
 	case EInteractEnum::VE_Collect:
 		if (c_TempInventory->IsValidLowLevel())
-			c_Inventory = c_TempInventory->c_InteractItem(c_TempInventory, currentTime);
+			c_Inventory = c_TempInventory->InteractItem(c_TempInventory, currentTime);
 		break;
 	case EInteractEnum::VE_Drop:
 		if (c_Inventory->IsValidLowLevel())
-			c_Inventory->c_newDropItem();
+			c_Inventory = c_Inventory->DropItem(m_charref->m_sphereComponent->GetComponentLocation());
 		break;
 	case EInteractEnum::VE_Interact:
 		if (c_BowlRef->IsValidLowLevel())
@@ -90,11 +90,11 @@ void AC_PlayerController::HandleItem(EInteractEnum interactEnum) {
 		break;
 	case EInteractEnum::VE_All:
 		if (c_TempInventory->IsValidLowLevel())
-			c_Inventory = c_TempInventory->c_InteractItem(c_TempInventory, currentTime);
+			c_Inventory = c_TempInventory->InteractItem(c_TempInventory, currentTime);
 		else if (c_BowlRef->IsValidLowLevel())
-				c_Inventory = c_BowlRef->InteractBowlObject(c_Inventory);
+			c_Inventory = c_BowlRef->InteractBowlObject(c_Inventory);
 		else if (c_Inventory->IsValidLowLevel())
-				c_Inventory->c_newDropItem();
+			c_Inventory = c_Inventory->DropItem(m_charref->m_sphereComponent->GetComponentLocation());
 		break;
 	default:
 		break;

@@ -39,23 +39,8 @@ void ABaseCollectable::OnOverlap(class UPrimitiveComponent* HitComp, class AActo
 	if (OtherActor == this)
 		return;
 
-	AC_PlayerController* tempController = Cast<AC_PlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
-	if (!tempController->IsValidLowLevel())
-		return;
-
-	if (OtherActor == UGameplayStatics::GetPlayerCharacter(GetWorld(), 0)) {
-
-		if ((m_supposedtimeenum == ETimeEnum::VE_Day && !tempController->currentTime) ||
-			(m_supposedtimeenum == ETimeEnum::VE_Night && tempController->currentTime) ||
-			(m_supposedtimeenum == ETimeEnum::VE_Day_Broken && tempController->currentTime) ||
-			(m_supposedtimeenum == ETimeEnum::VE_Night_Broken && !tempController->currentTime) ||
-			 m_supposedtimeenum == ETimeEnum::VE_None) {
-
-			tempController->c_TempInventory = this;
-			if (tempController->c_Inventory != nullptr)
-				tempController->bCanInteract = false;
-		}
-	}
+	if (OtherActor == UGameplayStatics::GetPlayerCharacter(GetWorld(), 0))
+		m_playerCanCollect = true;
 }
 
 // Disables Player interaction with the object
@@ -68,10 +53,8 @@ void ABaseCollectable::OnEndOverlap(class UPrimitiveComponent* HitComp, class AA
 	if (!tempController->IsValidLowLevel())
 		return;
 
-	if (OtherActor == UGameplayStatics::GetPlayerCharacter(GetWorld(), 0)) {
-		tempController->c_TempInventory = nullptr;
-		tempController->bCanInteract = true;
-	}
+	if (OtherActor == UGameplayStatics::GetPlayerCharacter(GetWorld(), 0))
+		m_playerCanCollect = false;
 }
 
 // Enables outline for the object
@@ -120,14 +103,32 @@ void ABaseCollectable::Tick(float DeltaTime)
 		SetMeshVisibility(false);
 		return;
 	}
-
-	AC_PlayerController* tempController = Cast<AC_PlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
-	if (!tempController->IsValidLowLevel())
-		return;
-
-	CheckTime(tempController->currentTime);
 }
 
+// Sets TempInventory if player begins Overlap
+ABaseCollectable* ABaseCollectable::PlayerBeginOverlap(bool currentTime) {
+	if (!m_playerCanCollect)
+		return;
+
+	if ((m_supposedtimeenum == ETimeEnum::VE_Day && !currentTime) ||
+		(m_supposedtimeenum == ETimeEnum::VE_Night && currentTime) ||
+		(m_supposedtimeenum == ETimeEnum::VE_Day_Broken && currentTime) ||
+		(m_supposedtimeenum == ETimeEnum::VE_Night_Broken && !currentTime) ||
+		 m_supposedtimeenum == ETimeEnum::VE_None) {
+
+		return this;
+	}
+
+	return nullptr;
+}
+
+// Clears TempInventory if player ends Overlap
+ABaseCollectable* ABaseCollectable::PlayerEndOverlap(bool currentTime) {
+
+	return nullptr;
+}
+
+// Checks if the current time is same as the object supposed time
 void ABaseCollectable::CheckTime(bool currentTime) {
 	switch (m_supposedtimeenum) {
 	case ETimeEnum::VE_Day:
@@ -171,6 +172,7 @@ void ABaseCollectable::CheckTime(bool currentTime) {
 	}
 }
 
+// Sets the Object visible / invisible
 void ABaseCollectable::SetMeshVisibility(bool visible)
 {
 	RootComponent->SetVisibility(visible, true);
@@ -179,12 +181,13 @@ void ABaseCollectable::SetMeshVisibility(bool visible)
 	if (!m_enabled)
 		return;
 
+	// If the actor has a broken Mesh, this will be set visible / invisible
 	if (C_BrokenMesh != nullptr) {
 		RootComponent->SetVisibility(!m_broken, true);
 		C_BrokenMesh->SetVisibility(m_broken, false);
 	}
 }
-
+/*
 void ABaseCollectable::CollectObject()
 {
 	AC_PlayerController* tempController = Cast<AC_PlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
@@ -197,8 +200,9 @@ void ABaseCollectable::CollectObject()
 		tempController->c_Inventory = this;
 		tempController->c_TempInventory = nullptr;
 	}
-}
+}*/
 
+// Returns the collected Object
 ABaseCollectable* ABaseCollectable::CollectObject(ABaseCollectable* object)
 {
 	if (object == this) {
@@ -208,9 +212,18 @@ ABaseCollectable* ABaseCollectable::CollectObject(ABaseCollectable* object)
 	}
 
 	return object;
-
 }
 
+// Enables the Object and clears inventory
+ABaseCollectable* ABaseCollectable::DropItem(FVector location) {
+	// Play Sound (tempController->c_Inventory->m_sDrop) || (tempController->c_sDrop)
+
+	this->SetActorLocation(location, true);
+	m_enabled = true;
+
+	return nullptr;
+}
+/*
 void ABaseCollectable::c_newDropItem()
 {
 	AC_PlayerController* tempController = Cast<AC_PlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
@@ -229,11 +242,13 @@ void ABaseCollectable::c_newDropItem()
 	tempController->c_Inventory->SetActorLocation(tempCharacter->m_sphereComponent->GetComponentLocation(), true);
 	tempController->c_Inventory = nullptr;
 	m_enabled = true;
-}
+}*/
 
+// Starts interaction with the current item
 ABaseCollectable* ABaseCollectable::c_InteractItem(ABaseCollectable* object, bool currentTime) {
 	// Play Sound here
 
+	// Repairs item if the player has the fix object
 	if (m_broken) {
 		if (!object->IsValidLowLevel())
 			return nullptr;
@@ -243,7 +258,7 @@ ABaseCollectable* ABaseCollectable::c_InteractItem(ABaseCollectable* object, boo
 			return nullptr;
 		}
 	}
-	else {
+	else { // If object isn't broken, check time requirements
 		switch (m_supposedtimeenum) {
 		case ETimeEnum::VE_Day: {
 			if (!currentTime)
@@ -278,7 +293,7 @@ ABaseCollectable* ABaseCollectable::c_InteractItem(ABaseCollectable* object, boo
 	return object;
 }
 
-
+/*
 void ABaseCollectable::c_CollectItem()
 {
 	AC_PlayerController* tempController = Cast<AC_PlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
@@ -331,4 +346,4 @@ void ABaseCollectable::c_CollectItem()
 		}
 		}
 	}
-}
+}*/

@@ -84,6 +84,8 @@ public:
 	UPROPERTY(VisibleDefaultsOnly, Category = "Default")
 		class UStaticMeshComponent *C_BrokenMesh;
 
+	bool m_playerCanCollect = false;;
+
 	AC_MainCharacter* m_charref;
 
 	// Called when the game starts or when spawned
@@ -94,18 +96,23 @@ public:
 
 	void SetMeshVisibility(bool visible);
 
-	void CollectObject();
+	//void CollectObject();
 	ABaseCollectable* CollectObject(ABaseCollectable* object);
 
+	ABaseCollectable* DropItem(FVector location);
+
+	ABaseCollectable* PlayerBeginOverlap(bool currentTime);
+	ABaseCollectable* PlayerEndOverlap(bool currentTime);
+
 	//Functions	
-	UFUNCTION(BlueprintCallable, Category = "ItemFunction")
-		virtual void c_CollectItem();
+	//UFUNCTION(BlueprintCallable, Category = "ItemFunction")
+	//	virtual void c_CollectItem();
 
 	UFUNCTION(BlueprintCallable, Category = "ItemFunction")
-		ABaseCollectable* c_InteractItem(ABaseCollectable* object, bool currentTime);
+		ABaseCollectable* InteractItem(ABaseCollectable* object, bool currentTime);
 
-	UFUNCTION(BlueprintCallable, Category = "ItemFunction")
-		virtual void c_newDropItem();
+	//UFUNCTION(BlueprintCallable, Category = "ItemFunction")
+	//	virtual void c_newDropItem();
 
 	UFUNCTION(BlueprintCallable, Category = "ItemFunction")
 		virtual void CheckTime(bool currentTime);
