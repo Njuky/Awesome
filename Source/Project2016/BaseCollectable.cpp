@@ -108,7 +108,7 @@ void ABaseCollectable::Tick(float DeltaTime)
 // Sets TempInventory if player begins Overlap
 ABaseCollectable* ABaseCollectable::PlayerBeginOverlap(bool currentTime) {
 	if (!m_playerCanCollect)
-		return;
+		return nullptr;
 
 	if ((m_supposedtimeenum == ETimeEnum::VE_Day && !currentTime) ||
 		(m_supposedtimeenum == ETimeEnum::VE_Night && currentTime) ||
@@ -245,7 +245,7 @@ void ABaseCollectable::c_newDropItem()
 }*/
 
 // Starts interaction with the current item
-ABaseCollectable* ABaseCollectable::c_InteractItem(ABaseCollectable* object, bool currentTime) {
+ABaseCollectable* ABaseCollectable::InteractItem(ABaseCollectable* object, bool currentTime) {
 	// Play Sound here
 
 	// Repairs item if the player has the fix object
