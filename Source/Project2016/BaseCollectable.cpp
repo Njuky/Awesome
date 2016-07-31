@@ -3,9 +3,6 @@
 #include "Project2016.h"
 #include "C_PlayerController.h"
 #include "BaseCollectable.h"
-#include "C_Bowl.h"
-#include "C_SaveGameData.h"
-#include "Kismet/GameplayStatics.h"
 
 // Sets default values
 ABaseCollectable::ABaseCollectable()
@@ -47,10 +44,6 @@ void ABaseCollectable::OnOverlap(class UPrimitiveComponent* HitComp, class AActo
 void ABaseCollectable::OnEndOverlap(class UPrimitiveComponent* HitComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
 	if (OtherActor == this)
-		return;
-
-	AC_PlayerController* tempController = Cast<AC_PlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
-	if (!tempController->IsValidLowLevel())
 		return;
 
 	if (OtherActor == UGameplayStatics::GetPlayerCharacter(GetWorld(), 0))
@@ -123,9 +116,15 @@ ABaseCollectable* ABaseCollectable::PlayerBeginOverlap(bool currentTime) {
 }
 
 // Clears TempInventory if player ends Overlap
-ABaseCollectable* ABaseCollectable::PlayerEndOverlap(bool currentTime) {
+ABaseCollectable* ABaseCollectable::PlayerEndOverlap(ABaseCollectable* other) {
 
-	return nullptr;
+	if(m_playerCanCollect)
+		return nullptr;
+
+	if (!m_enabled)
+		return nullptr;
+
+	return other;
 }
 
 // Checks if the current time is same as the object supposed time
@@ -177,6 +176,7 @@ void ABaseCollectable::SetMeshVisibility(bool visible)
 {
 	RootComponent->SetVisibility(visible, true);
 	SetActorEnableCollision(visible);
+	SetActorHiddenInGame(false);
 
 	if (!m_enabled)
 		return;
@@ -187,20 +187,6 @@ void ABaseCollectable::SetMeshVisibility(bool visible)
 		C_BrokenMesh->SetVisibility(m_broken, false);
 	}
 }
-/*
-void ABaseCollectable::CollectObject()
-{
-	AC_PlayerController* tempController = Cast<AC_PlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
-	if (!tempController->IsValidLowLevel())
-		return;
-
-	if (tempController->c_Inventory == nullptr) {
-		m_enabled = false;
-		SetMeshVisibility(false);
-		tempController->c_Inventory = this;
-		tempController->c_TempInventory = nullptr;
-	}
-}*/
 
 // Returns the collected Object
 ABaseCollectable* ABaseCollectable::CollectObject(ABaseCollectable* object)
@@ -220,29 +206,10 @@ ABaseCollectable* ABaseCollectable::DropItem(FVector location) {
 
 	this->SetActorLocation(location, true);
 	m_enabled = true;
+	SetMeshVisibility(true);
 
 	return nullptr;
 }
-/*
-void ABaseCollectable::c_newDropItem()
-{
-	AC_PlayerController* tempController = Cast<AC_PlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
-	if (!tempController->IsValidLowLevel())
-		return;
-
-	AC_MainCharacter* tempCharacter = Cast<AC_MainCharacter>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
-	if (!tempCharacter->IsValidLowLevel())
-		return;
-
-	if (tempController->c_Inventory->m_sDrop->IsValidLowLevel())
-		tempController->cPlaySound(tempController->c_Inventory->m_sDrop);
-	else if (tempController->c_sDrop->IsValidLowLevel())
-		tempController->cPlaySound(tempController->c_sDrop);
-
-	tempController->c_Inventory->SetActorLocation(tempCharacter->m_sphereComponent->GetComponentLocation(), true);
-	tempController->c_Inventory = nullptr;
-	m_enabled = true;
-}*/
 
 // Starts interaction with the current item
 ABaseCollectable* ABaseCollectable::InteractItem(ABaseCollectable* object, bool currentTime) {
@@ -292,58 +259,3 @@ ABaseCollectable* ABaseCollectable::InteractItem(ABaseCollectable* object, bool 
 	}
 	return object;
 }
-
-/*
-void ABaseCollectable::c_CollectItem()
-{
-	AC_PlayerController* tempController = Cast<AC_PlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
-	if (!tempController->IsValidLowLevel())
-		return;
-
-	//Play Sound
-	if (tempController->c_TempInventory->m_sCollect->IsValidLowLevel())
-		tempController->cPlaySound(tempController->c_TempInventory->m_sCollect);
-	else if (tempController->c_sCollect->IsValidLowLevel())
-		tempController->cPlaySound(tempController->c_sCollect);
-
-	if (m_broken) {
-		if (tempController->c_Inventory->IsValidLowLevel()) {
-			if (tempController->c_Inventory->GetClass()->IsChildOf(m_supposedRepairObject)) {
-				m_broken = false;
-				tempController->c_Inventory = nullptr;
-			}
-		}
-	}
-	else {
-		switch (m_supposedtimeenum) {
-		case ETimeEnum::VE_Day: {
-			if (!tempController->currentTime)
-				CollectObject();
-			break;
-		}
-		case ETimeEnum::VE_Night: {
-			if (tempController->currentTime)
-				CollectObject();
-			break;
-		}
-		case ETimeEnum::VE_Day_Broken: {
-			if (tempController->currentTime)
-				CollectObject();
-			break;
-		}
-		case ETimeEnum::VE_Night_Broken: {
-			if (!tempController->currentTime)
-				CollectObject();
-			break;
-		}
-		case ETimeEnum::VE_None: {
-			CollectObject();
-			break;
-		}
-		default: {
-			SetMeshVisibility(false);
-			break;
-		}
-		}
-	}
-}*/

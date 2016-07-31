@@ -65,7 +65,7 @@ void AC_PlayerController::Tick(float DeltaTime)
 		if (c_Inventory->IsValidLowLevel() && bCanInteract) {
 			m_charref->m_animation = EAnimationEnum::VE_InteractLow;
 		}// Collect item
-		else if (c_TempInventory->IsValidLowLevel()) {
+		else if (c_TempInventory->IsValidLowLevel() && !c_Inventory->IsValidLowLevel()) {
 			m_charref->m_animation = c_TempInventory->m_animationTypeEnum;
 		}// Interact Bowl
 		else if (c_BowlRef->IsValidLowLevel()) {
@@ -96,7 +96,22 @@ void AC_PlayerController::HandleItem(EInteractEnum interactEnum) {
 		else if (c_Inventory->IsValidLowLevel())
 			c_Inventory = c_Inventory->DropItem(m_charref->m_sphereComponent->GetComponentLocation());
 		break;
-	default:
-		break;
+	}
+}
+
+void AC_PlayerController::PlayerOverlapBegin(AActor* other) {
+	if (c_TempInventory->IsValidLowLevel())
+		return;
+
+	if (other->GetClass()->IsChildOf(ABaseCollectable::StaticClass())) {
+		ABaseCollectable* tempObject = Cast<ABaseCollectable>(other);
+		c_TempInventory = tempObject->PlayerBeginOverlap(currentTime);
+	}
+}
+
+void AC_PlayerController::PlayerOverlapEnd(AActor* other) {
+	if (other->GetActorClass()->IsChildOf(ABaseCollectable::StaticClass())) {
+		ABaseCollectable* tempObject = Cast<ABaseCollectable>(other);
+		c_TempInventory = tempObject->PlayerEndOverlap(c_TempInventory);
 	}
 }

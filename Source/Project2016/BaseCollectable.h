@@ -6,8 +6,6 @@
 #include "GameFramework/Actor.h"
 #include "BaseCollectable.generated.h"
 
-class AC_Bowl;
-
 UENUM(BlueprintType)
 enum class ETimeEnum : uint8 {
 	VE_None			UMETA(DisplayName = "None"),
@@ -102,17 +100,12 @@ public:
 	ABaseCollectable* DropItem(FVector location);
 
 	ABaseCollectable* PlayerBeginOverlap(bool currentTime);
-	ABaseCollectable* PlayerEndOverlap(bool currentTime);
+	ABaseCollectable* PlayerEndOverlap(ABaseCollectable* other);
 
 	//Functions	
-	//UFUNCTION(BlueprintCallable, Category = "ItemFunction")
-	//	virtual void c_CollectItem();
 
 	UFUNCTION(BlueprintCallable, Category = "ItemFunction")
 		ABaseCollectable* InteractItem(ABaseCollectable* object, bool currentTime);
-
-	//UFUNCTION(BlueprintCallable, Category = "ItemFunction")
-	//	virtual void c_newDropItem();
 
 	UFUNCTION(BlueprintCallable, Category = "ItemFunction")
 		virtual void CheckTime(bool currentTime);

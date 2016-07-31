@@ -184,6 +184,12 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "TimewalkDefault")
 		void HandleItem(EInteractEnum interactEnum);
 
+	UFUNCTION(BlueprintCallable, Category = "TimewalkDefault")
+		void PlayerOverlapBegin(AActor* other);
+
+	UFUNCTION(BlueprintCallable, Category = "TimewalkDefault")
+		void PlayerOverlapEnd(AActor* other);
+
 	UFUNCTION(BlueprintCallable, Category = "Default")
 		void cPlaySound(USoundBase* sound);
 
