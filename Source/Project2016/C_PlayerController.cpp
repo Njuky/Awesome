@@ -4,6 +4,27 @@
 #include "C_PlayerController.h"
 #include "C_Bowl.h"
 
+void AC_PlayerController::SetupInputComponent(){
+	Super::SetupInputComponent();
+	InputComponent->BindAction("Interact", IE_Pressed, this, &AC_PlayerController::Interact);
+}
+
+void AC_PlayerController::Interact() {
+	if (!m_charref->IsValidLowLevel())
+		return;
+
+	// Drop Item
+	if (c_Inventory->IsValidLowLevel() && bCanInteract) {
+		m_charref->m_animation = EAnimationEnum::VE_InteractLow;
+	}// Collect item
+	else if (c_TempInventory->IsValidLowLevel() && !c_Inventory->IsValidLowLevel()) {
+		m_charref->m_animation = c_TempInventory->m_animationTypeEnum;
+	}// Interact Bowl
+	else if (c_BowlRef->IsValidLowLevel()) {
+		m_charref->m_animation = c_BowlRef->m_animationTypeEnum;
+	}
+}
+
 //Updates alpha per tick
 bool AC_PlayerController::UpdateAlpha(float DeltaTime, float runTime)
 {
@@ -56,7 +77,7 @@ void AC_PlayerController::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	if (WasInputKeyJustPressed(EKeys::F) || WasInputKeyJustPressed(EKeys::Gamepad_FaceButton_Right)) {
+	/*if (WasInputKeyJustPressed(EKeys::F) || WasInputKeyJustPressed(EKeys::Gamepad_FaceButton_Right)) {
 
 		if (!m_charref->IsValidLowLevel())
 			return;
@@ -71,14 +92,17 @@ void AC_PlayerController::Tick(float DeltaTime)
 		else if (c_BowlRef->IsValidLowLevel()) {
 			m_charref->m_animation = c_BowlRef->m_animationTypeEnum;
 		}
-	}
+	}*/
 }
 
 void AC_PlayerController::HandleItem(EInteractEnum interactEnum) {
 	switch (interactEnum) {
 	case EInteractEnum::VE_Collect:
-		if (c_TempInventory->IsValidLowLevel())
+		if (c_TempInventory->IsValidLowLevel()) {
 			c_Inventory = c_TempInventory->InteractItem(c_TempInventory, currentTime);
+			if (c_Inventory == c_TempInventory)
+				c_TempInventory = nullptr;
+		}
 		break;
 	case EInteractEnum::VE_Drop:
 		if (c_Inventory->IsValidLowLevel())
@@ -89,8 +113,15 @@ void AC_PlayerController::HandleItem(EInteractEnum interactEnum) {
 			c_Inventory = c_BowlRef->InteractBowlObject(c_Inventory);
 		break;
 	case EInteractEnum::VE_All:
-		if (c_TempInventory->IsValidLowLevel())
-			c_Inventory = c_TempInventory->InteractItem(c_TempInventory, currentTime);
+		if (c_TempInventory->IsValidLowLevel()) {
+			if (c_Inventory->IsValidLowLevel())
+				c_Inventory = c_TempInventory->InteractItem(c_Inventory, currentTime);
+			else
+				c_Inventory = c_TempInventory->InteractItem(c_TempInventory, currentTime);
+
+			if (c_Inventory == c_TempInventory)
+				c_TempInventory = nullptr;
+		}
 		else if (c_BowlRef->IsValidLowLevel())
 			c_Inventory = c_BowlRef->InteractBowlObject(c_Inventory);
 		else if (c_Inventory->IsValidLowLevel())

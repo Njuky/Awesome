@@ -178,8 +178,12 @@ public:
 	AC_MainCharacter* m_charref;
 
 	//Functions
+	
+	void SetupInputComponent();
+	void Interact();
+
 	UFUNCTION(BlueprintCallable, Category = "TimewalkDefault")
-		bool UpdateAlpha(float DeltaTime, float runTime);
+	bool UpdateAlpha(float DeltaTime, float runTime);
 
 	UFUNCTION(BlueprintCallable, Category = "TimewalkDefault")
 		void HandleItem(EInteractEnum interactEnum);

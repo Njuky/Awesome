@@ -105,38 +105,41 @@ ABaseCollectable* AC_Bowl::InteractBowlObject(ABaseCollectable* object) {
 		if (object->IsValidLowLevel()) {
 			if (object->GetClass()->IsChildOf(acceptedClass) && !c_slot->IsValidLowLevel()) {
 				c_slot = object;
-				returnValue = nullptr;
+				//	returnValue = nullptr;
 				RefreshSlot();
 
 				if (c_slot->m_supposedBowlTag == c_supposedObjectTag)
 					c_solved = true;
 
 				//Play Sound here (c_sPlaceObject)
+
+				return nullptr;
 			}
 		}
 		else {
 			if (c_slot == nullptr)
 				return nullptr;
 
-			if (c_slot->IsValidLowLevel()) {
-				returnValue = c_slot;
-				c_slot = nullptr;
-				c_solved = false;
-				RefreshSlot();
+			ABaseCollectable* returnValue = c_slot;
+			c_slot = nullptr;
+			c_solved = false;
+			RefreshSlot();
 
-				//play Sound here (c_sTakeObject)
-			}
+			//play Sound here (c_sTakeObject)
+
+			return returnValue;
 		}
 	}
 	else {
 		if (object->GetClass()->IsChildOf(acceptedClassRepair)) {
 			bowlExist = true;
-			returnValue = nullptr;
+			//returnValue = nullptr;
+			return nullptr;
 
 			//play Sound here (c_sPlaceObject)
 		}
 	}
-	return returnValue;
+	return object;
 }
 
 /*

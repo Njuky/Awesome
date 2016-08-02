@@ -49,17 +49,14 @@ public:
 	UPROPERTY(VisibleDefaultsOnly, Category = "Private")
 		APlayerController* playerControllerRef;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Eventually cut")
-		bool bowl;
+//	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Eventually cut")
+//		bool bowl;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Eventually cut")
-		bool flower;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Default")
-		TSubclassOf<ABaseCollectable> m_supposedRepairObject;
+//	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Eventually cut")
+//		bool flower;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Default")
-		FName m_supposedObjectTag;
+		ABaseCollectable* m_repairObject;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Default")
 		USoundBase* m_sCollect;

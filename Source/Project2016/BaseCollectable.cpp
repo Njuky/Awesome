@@ -220,8 +220,9 @@ ABaseCollectable* ABaseCollectable::InteractItem(ABaseCollectable* object, bool 
 		if (!object->IsValidLowLevel())
 			return nullptr;
 
-		if (object->GetClass()->IsChildOf(m_supposedRepairObject)) {
+		if (object == m_repairObject) {
 			m_broken = false;
+			CheckTime(currentTime);
 			return nullptr;
 		}
 	}
