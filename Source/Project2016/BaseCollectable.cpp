@@ -8,13 +8,14 @@
 ABaseCollectable::ABaseCollectable()
 {
 	//Initialize Mesh Components
-	CapsuleComponent = CreateDefaultSubobject<UCapsuleComponent>(TEXT("Capsule"));
+//	CapsuleComponent = CreateDefaultSubobject<UCapsuleComponent>(TEXT("Capsule"));
 	SphereComponent = CreateDefaultSubobject<USphereComponent>(TEXT("Collect Sphere"));
 	m_outlinesphere = CreateDefaultSubobject<USphereComponent>(TEXT("Outline Sphere"));
 	StaticMeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("UnitMesh"));
 	C_BrokenMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("C_BrokenMesh"));
-	RootComponent = CapsuleComponent;
-	C_BrokenMesh->SetupAttachment(RootComponent);
+	//RootComponent = CapsuleComponent;
+	RootComponent = C_BrokenMesh;
+	//C_BrokenMesh->SetupAttachment(RootComponent);
 	SphereComponent->SetupAttachment(RootComponent);
 	m_outlinesphere->SetupAttachment(RootComponent);
 	StaticMeshComponent->SetupAttachment(RootComponent);
@@ -29,6 +30,7 @@ ABaseCollectable::ABaseCollectable()
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 }
+
 
 // Enables Player to Interact with the object
 void ABaseCollectable::OnOverlap(class UPrimitiveComponent* HitComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult)
@@ -79,6 +81,7 @@ void ABaseCollectable::OnEndOutline(UPrimitiveComponent * HitComp, AActor * Othe
 			C_BrokenMesh->SetRenderCustomDepth(false);
 	}
 }
+
 
 // Called when the game starts or when spawned
 void ABaseCollectable::BeginPlay()

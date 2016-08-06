@@ -76,23 +76,6 @@ void AC_PlayerController::BeginPlay()
 void AC_PlayerController::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
-	/*if (WasInputKeyJustPressed(EKeys::F) || WasInputKeyJustPressed(EKeys::Gamepad_FaceButton_Right)) {
-
-		if (!m_charref->IsValidLowLevel())
-			return;
-
-		// Drop Item
-		if (c_Inventory->IsValidLowLevel() && bCanInteract) {
-			m_charref->m_animation = EAnimationEnum::VE_InteractLow;
-		}// Collect item
-		else if (c_TempInventory->IsValidLowLevel() && !c_Inventory->IsValidLowLevel()) {
-			m_charref->m_animation = c_TempInventory->m_animationTypeEnum;
-		}// Interact Bowl
-		else if (c_BowlRef->IsValidLowLevel()) {
-			m_charref->m_animation = c_BowlRef->m_animationTypeEnum;
-		}
-	}*/
 }
 
 void AC_PlayerController::HandleItem(EInteractEnum interactEnum) {
@@ -141,7 +124,7 @@ void AC_PlayerController::PlayerOverlapBegin(AActor* other) {
 }
 
 void AC_PlayerController::PlayerOverlapEnd(AActor* other) {
-	if (other->GetActorClass()->IsChildOf(ABaseCollectable::StaticClass())) {
+	if (other->GetClass()->IsChildOf(ABaseCollectable::StaticClass())) {
 		ABaseCollectable* tempObject = Cast<ABaseCollectable>(other);
 		c_TempInventory = tempObject->PlayerEndOverlap(c_TempInventory);
 	}

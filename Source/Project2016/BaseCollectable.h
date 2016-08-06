@@ -64,8 +64,8 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Default")
 		USoundBase* m_sDrop;
 
-	UPROPERTY(VisibleDefaultsOnly, Category = "Default")
-		UCapsuleComponent* CapsuleComponent;
+	//UPROPERTY(VisibleDefaultsOnly, Category = "Default")
+	//	UCapsuleComponent* CapsuleComponent;
 
 	UPROPERTY(VisibleAnywhere, Category = "Default")
 		class USphereComponent* SphereComponent;
@@ -118,4 +118,5 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "Overlap")
 		virtual void OnEndOutline(class UPrimitiveComponent* HitComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
+		
 };
