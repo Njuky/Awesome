@@ -41,10 +41,15 @@ public:
 		virtual void LoadGame();
 
 	UFUNCTION(BlueprintCallable, Category = "SaveGame")
+		virtual void SaveSettings();
+
+	UFUNCTION(BlueprintCallable, Category = "LoadGame")
+		virtual void LoadSettings();
+
+	UFUNCTION(BlueprintCallable, Category = "SaveGame")
 		virtual void SaveCollectable(ABaseCollectable *Object);
 
 	UFUNCTION(BlueprintCallable, Category = "LoadGame")
-
 		virtual void LoadCollectable(ABaseCollectable *Object);
 
 	UFUNCTION(BlueprintCallable, Category = "SaveGame")

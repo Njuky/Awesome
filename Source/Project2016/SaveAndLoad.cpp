@@ -1,9 +1,15 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "Project2016.h"
+#include "MGameMode.h"
 #include "SaveAndLoad.h"
+#include "SaveSettings.h"
 #include "C_SaveGameData.h"
 #include "Kismet/GameplayStatics.h"
+
+// -------------------------------------------------------------
+//						BASE FUNCTIONS
+// -------------------------------------------------------------
 
 // Sets default values
 ASaveAndLoad::ASaveAndLoad()
@@ -21,8 +27,25 @@ ASaveAndLoad::ASaveAndLoad()
 void ASaveAndLoad::BeginPlay()
 {
 	Super::BeginPlay();
-	
 }
+
+// Called every frame
+void ASaveAndLoad::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+
+	if (m_saved)
+		if (m_waited >= m_SaveCooldown) {
+			m_saved = false;
+			m_waited = 0.0f;
+		}
+		else
+			m_waited += DeltaTime;
+}
+
+// -------------------------------------------------------------
+//						SAVEGAME FUNCTIONS
+// -------------------------------------------------------------
 
 void ASaveAndLoad::SaveGame() {
 	for (TActorIterator<ABaseCollectable> ActorItr(GetWorld()); ActorItr; ++ActorItr) {
@@ -52,18 +75,41 @@ void ASaveAndLoad::LoadGame() {
 	LoadController();
 }
 
-// Called every frame
-void ASaveAndLoad::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
+// -------------------------------------------------------------
+//						SETTINGS FUNCTIONS
+// -------------------------------------------------------------
 
-	if (m_saved)
-		if (m_waited >= m_SaveCooldown) {
-			m_saved = false;
-			m_waited = 0.0f;
-		}
-		else
-			m_waited += DeltaTime;
+void ASaveAndLoad::SaveSettings() {
+	USaveSettings* LoadGameInstance = Cast<USaveSettings>(UGameplayStatics::CreateSaveGameObject(USaveSettings::StaticClass()));
+	LoadGameInstance = Cast<USaveSettings>(UGameplayStatics::LoadGameFromSlot(LoadGameInstance->SaveSlotName, LoadGameInstance->UserIndex));
+	if (!LoadGameInstance->IsValidLowLevel())
+		LoadGameInstance = Cast<USaveSettings>(UGameplayStatics::CreateSaveGameObject(USaveSettings::StaticClass()));
+
+	AMGameMode* tempGameMode = (AMGameMode*)GetWorld()->GetAuthGameMode();
+	if (!tempGameMode->IsValidLowLevel())	
+		return;
+
+	LoadGameInstance->SaveAudioVolume.MasterMixVolume = tempGameMode->m_MasterVolume;
+	LoadGameInstance->SaveAudioVolume.AmbientMixVolume = tempGameMode->m_AmbientVolume;
+	LoadGameInstance->SaveAudioVolume.SFXMixVolume = tempGameMode->m_SFXVolume;
+
+	UGameplayStatics::SaveGameToSlot(LoadGameInstance, LoadGameInstance->SaveSlotName, LoadGameInstance->UserIndex);
+
+}
+
+void ASaveAndLoad::LoadSettings() {
+	USaveSettings* LoadGameInstance = Cast<USaveSettings>(UGameplayStatics::CreateSaveGameObject(USaveSettings::StaticClass()));
+	LoadGameInstance = Cast<USaveSettings>(UGameplayStatics::LoadGameFromSlot(LoadGameInstance->SaveSlotName, LoadGameInstance->UserIndex));
+	if (!LoadGameInstance->IsValidLowLevel())
+		return;
+
+	AMGameMode* tempGameMode = Cast<AMGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
+	if (!tempGameMode->IsValidLowLevel())
+		return;
+
+	tempGameMode->m_MasterVolume = LoadGameInstance->SaveAudioVolume.MasterMixVolume;
+	tempGameMode->m_AmbientVolume = LoadGameInstance->SaveAudioVolume.AmbientMixVolume;
+	tempGameMode->m_SFXVolume = LoadGameInstance->SaveAudioVolume.SFXMixVolume;
 }
 
 // -------------------------------------------------------------
