@@ -87,11 +87,13 @@ void AC_Bowl::Tick(float DeltaTime)
 
 	if (bowlExist) {
 		c_Bowl->SetVisibility(true, false);
-		c_BowlBroken->SetVisibility(false, false);
+		m_NormalMesh->SetVisibility(true, false);
+		m_BrokenMesh->SetVisibility(false, false);
 	}
 	else {
 		c_Bowl->SetVisibility(false, false);
-		c_BowlBroken->SetVisibility(true, false);
+		m_NormalMesh->SetVisibility(false, false);
+		m_BrokenMesh->SetVisibility(true, false);
 	}
 }
 

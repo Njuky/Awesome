@@ -72,6 +72,9 @@ public:
 		class UStaticMeshComponent *C_BrokenMesh;
 
 	UPROPERTY(VisibleDefaultsOnly, Category = "Default")
+		class USkeletalMeshComponent *m_NormalMesh;
+
+	UPROPERTY(VisibleDefaultsOnly, Category = "Default")
 		class UAudioMaster* AudioMaster;
 
 	bool m_playerCanCollect = false;;

@@ -11,9 +11,11 @@ ABaseCollectable::ABaseCollectable()
 	SphereComponent = CreateDefaultSubobject<USphereComponent>(TEXT("Collect Sphere"));
 	m_outlinesphere = CreateDefaultSubobject<USphereComponent>(TEXT("Outline Sphere"));
 	StaticMeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("UnitMesh"));
+	m_NormalMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("m_NormalMesh"));
 	C_BrokenMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("C_BrokenMesh"));
 	AudioMaster = CreateDefaultSubobject<UAudioMaster>(TEXT("AudioMaster"));
 	RootComponent = C_BrokenMesh;
+	m_NormalMesh->SetupAttachment(RootComponent);
 	SphereComponent->SetupAttachment(RootComponent);
 	m_outlinesphere->SetupAttachment(RootComponent);
 	StaticMeshComponent->SetupAttachment(RootComponent);
@@ -60,6 +62,9 @@ void ABaseCollectable::OnOutline(UPrimitiveComponent * HitComp, AActor * OtherAc
 		if(StaticMeshComponent != nullptr)
 			StaticMeshComponent->SetRenderCustomDepth(true);
 
+		if (m_NormalMesh != nullptr)
+			m_NormalMesh->SetRenderCustomDepth(true);
+
 		if (C_BrokenMesh != nullptr)
 			C_BrokenMesh->SetRenderCustomDepth(true);
 	}
@@ -74,6 +79,9 @@ void ABaseCollectable::OnEndOutline(UPrimitiveComponent * HitComp, AActor * Othe
 	if (OtherActor == UGameplayStatics::GetPlayerCharacter(GetWorld(), 0)) {
 		if (StaticMeshComponent != nullptr)
 			StaticMeshComponent->SetRenderCustomDepth(false);
+
+		if (m_NormalMesh != nullptr)
+			m_NormalMesh->SetRenderCustomDepth(false);
 
 		if (C_BrokenMesh != nullptr)
 			C_BrokenMesh->SetRenderCustomDepth(false);
@@ -183,10 +191,6 @@ void ABaseCollectable::SetMeshVisibility(bool visible)
 		return;
 
 	// If the actor has a broken Mesh, this will be set visible / invisible
-
-	if (!m_broken)
-		return;
-
 	if (C_BrokenMesh != nullptr) {
 		RootComponent->SetVisibility(!m_broken, true);
 		C_BrokenMesh->SetVisibility(m_broken, false);
