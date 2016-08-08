@@ -3,6 +3,7 @@
 #pragma once
 
 #include "C_MainCharacter.h"
+#include "AudioMaster.h"
 #include "C_PlayerController.h"
 #include "GameFramework/Actor.h"
 #include "C_Bowl.generated.h"
@@ -66,6 +67,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Default")
 		FName c_supposedObjectTag;
 
+	UPROPERTY(VisibleDefaultsOnly, Category = "Default")
+		class UAudioMaster* AudioMaster;
+
 	AC_MainCharacter* m_charref;
 
 	// Called when the game starts or when spawned
@@ -74,11 +78,7 @@ public:
 	// Called every frame
 	virtual void Tick( float DeltaSeconds ) override;
 	
-//	UFUNCTION(BlueprintCallable, Category = "ItemFunction")
-//		virtual void Interact();
-	
-//	UFUNCTION(BlueprintCallable, Category = "ItemFunction")
-//		virtual void InteractBowl();
+
 
 	UFUNCTION(BlueprintCallable, Category = "ItemFunction")
 		ABaseCollectable* InteractBowlObject(ABaseCollectable* object);

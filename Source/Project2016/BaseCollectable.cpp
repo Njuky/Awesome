@@ -8,14 +8,12 @@
 ABaseCollectable::ABaseCollectable()
 {
 	//Initialize Mesh Components
-//	CapsuleComponent = CreateDefaultSubobject<UCapsuleComponent>(TEXT("Capsule"));
 	SphereComponent = CreateDefaultSubobject<USphereComponent>(TEXT("Collect Sphere"));
 	m_outlinesphere = CreateDefaultSubobject<USphereComponent>(TEXT("Outline Sphere"));
 	StaticMeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("UnitMesh"));
 	C_BrokenMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("C_BrokenMesh"));
-	//RootComponent = CapsuleComponent;
+	AudioMaster = CreateDefaultSubobject<UAudioMaster>(TEXT("AudioMaster"));
 	RootComponent = C_BrokenMesh;
-	//C_BrokenMesh->SetupAttachment(RootComponent);
 	SphereComponent->SetupAttachment(RootComponent);
 	m_outlinesphere->SetupAttachment(RootComponent);
 	StaticMeshComponent->SetupAttachment(RootComponent);
@@ -197,6 +195,9 @@ ABaseCollectable* ABaseCollectable::CollectObject(ABaseCollectable* object)
 	if (object == this) {
 		m_enabled = false;
 		SetMeshVisibility(false);
+
+		if (m_sCollect != nullptr)
+			AudioMaster->PlaySound(m_sCollect);
 		return this;
 	}
 
@@ -205,7 +206,9 @@ ABaseCollectable* ABaseCollectable::CollectObject(ABaseCollectable* object)
 
 // Enables the Object and clears inventory
 ABaseCollectable* ABaseCollectable::DropItem(FVector location) {
-	// Play Sound (tempController->c_Inventory->m_sDrop) || (tempController->c_sDrop)
+
+	if (m_sDrop != nullptr)
+		AudioMaster->PlaySound(m_sDrop);
 
 	this->SetActorLocation(location, true);
 	m_enabled = true;
@@ -216,7 +219,6 @@ ABaseCollectable* ABaseCollectable::DropItem(FVector location) {
 
 // Starts interaction with the current item
 ABaseCollectable* ABaseCollectable::InteractItem(ABaseCollectable* object, bool currentTime) {
-	// Play Sound here
 
 	// Repairs item if the player has the fix object
 	if (m_broken) {
@@ -224,6 +226,10 @@ ABaseCollectable* ABaseCollectable::InteractItem(ABaseCollectable* object, bool 
 			return nullptr;
 
 		if (object == m_repairObject) {
+
+			if (m_sDrop != nullptr)
+				AudioMaster->PlaySound(m_sDrop);
+
 			m_broken = false;
 			CheckTime(currentTime);
 			return nullptr;

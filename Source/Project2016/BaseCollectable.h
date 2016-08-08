@@ -3,6 +3,7 @@
 #pragma once
 
 #include "C_MainCharacter.h"
+#include "AudioMaster.h"
 #include "GameFramework/Actor.h"
 #include "BaseCollectable.generated.h"
 
@@ -78,6 +79,9 @@ public:
 
 	UPROPERTY(VisibleDefaultsOnly, Category = "Default")
 		class UStaticMeshComponent *C_BrokenMesh;
+
+	UPROPERTY(VisibleDefaultsOnly, Category = "Default")
+		class UAudioMaster* AudioMaster;
 
 	bool m_playerCanCollect = false;;
 

@@ -11,6 +11,7 @@ AC_Bowl::AC_Bowl()
 	c_Bowl = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("C_Bowl"));
 	c_BowlBroken = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("C_BowlBroken"));
 	c_InsertedObject = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("C_InsertedObject"));
+	AudioMaster = CreateDefaultSubobject<UAudioMaster>(TEXT("AudioMaster"));
 	RootComponent = c_CollisionSphere;
 	c_Bowl->SetupAttachment(RootComponent);
 	c_BowlBroken->SetupAttachment(RootComponent);
@@ -88,12 +89,6 @@ void AC_Bowl::Tick(float DeltaTime)
 		c_Bowl->SetVisibility(false, false);
 		c_BowlBroken->SetVisibility(true, false);
 	}
-
-//	if (c_CanInteract) {
-//		if (pController_Ref->WasInputKeyJustPressed(EKeys::F) || pController_Ref->WasInputKeyJustPressed(EKeys::Gamepad_FaceButton_Right)) {
-//			Interact();
-//		}
-//	}
 }
 
 
@@ -105,13 +100,13 @@ ABaseCollectable* AC_Bowl::InteractBowlObject(ABaseCollectable* object) {
 		if (object->IsValidLowLevel()) {
 			if (object->GetClass()->IsChildOf(acceptedClass) && !c_slot->IsValidLowLevel()) {
 				c_slot = object;
-				//	returnValue = nullptr;
 				RefreshSlot();
 
 				if (c_slot->m_supposedBowlTag == c_supposedObjectTag)
 					c_solved = true;
 
-				//Play Sound here (c_sPlaceObject)
+				if (c_sPlaceObject != nullptr)
+					AudioMaster->PlaySound(c_sPlaceObject);
 
 				return nullptr;
 			}
@@ -125,7 +120,8 @@ ABaseCollectable* AC_Bowl::InteractBowlObject(ABaseCollectable* object) {
 			c_solved = false;
 			RefreshSlot();
 
-			//play Sound here (c_sTakeObject)
+			if (c_sTakeObject != nullptr)
+				AudioMaster->PlaySound(c_sTakeObject);
 
 			return returnValue;
 		}
@@ -133,62 +129,16 @@ ABaseCollectable* AC_Bowl::InteractBowlObject(ABaseCollectable* object) {
 	else {
 		if (object->GetClass()->IsChildOf(acceptedClassRepair)) {
 			bowlExist = true;
-			//returnValue = nullptr;
-			return nullptr;
 
-			//play Sound here (c_sPlaceObject)
+			if (c_sPlaceObject != nullptr)
+				AudioMaster->PlaySound(c_sPlaceObject);
+
+			return nullptr;
 		}
 	}
 	return object;
 }
 
-/*
-void AC_Bowl::InteractBowl() {
-	if (!pController_Ref->IsValidLowLevel())
-		return;
-
-	if (bowlExist) {//place object
-		if (pController_Ref->c_Inventory->IsValidLowLevel()) {
-			if (pController_Ref->c_Inventory->GetClass()->IsChildOf(acceptedClass) && !c_slot->IsValidLowLevel()) {
-				pController_Ref->c_Inventory->StaticMeshComponent->SetRenderCustomDepth(false);
-				c_slot = pController_Ref->c_Inventory;
-				pController_Ref->c_Inventory = NULL;
-				RefreshSlot();
-
-				if (c_slot->m_supposedBowlTag == c_supposedObjectTag)
-					c_solved = true;
-
-				if (c_sPlaceObject->IsValidLowLevel())
-					pController_Ref->cPlaySound(c_sPlaceObject);
-			}
-		}
-		else {
-			if (c_slot == nullptr)
-				return;
-
-			if (c_slot->IsValidLowLevel()) {
-				pController_Ref->c_Inventory = c_slot;
-				pController_Ref->c_Inventory->bowl = true; // WTF ?
-				c_InsertedObject->SetVisibility(false, false);
-				c_slot = NULL;
-				c_solved = false;
-
-				if (c_sPlaceObject->IsValidLowLevel())
-					pController_Ref->cPlaySound(c_sTakeObject);
-			}
-		}
-	}
-	else {
-		if (pController_Ref->c_Inventory->GetClass()->IsChildOf(acceptedClassRepair)) {
-			bowlExist = true;
-			pController_Ref->c_Inventory = NULL;
-
-			if (c_sPlaceObject->IsValidLowLevel())
-				pController_Ref->cPlaySound(c_sPlaceObject);
-		}
-	}
-}
-*/
 void AC_Bowl::RefreshSlot() {
 	if (c_slot->IsValidLowLevel()) {
 		c_InsertedObject->SetStaticMesh(c_slot->StaticMeshComponent->StaticMesh);
