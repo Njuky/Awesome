@@ -11,8 +11,12 @@ AC_Bowl::AC_Bowl()
 	c_Bowl = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("C_Bowl"));
 	c_BowlBroken = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("C_BowlBroken"));
 	c_InsertedObject = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("C_InsertedObject"));
+	m_NormalMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("m_NormalMesh"));
+	m_BrokenMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("m_BrokenMesh"));
 	AudioMaster = CreateDefaultSubobject<UAudioMaster>(TEXT("AudioMaster"));
 	RootComponent = c_CollisionSphere;
+	m_NormalMesh->SetupAttachment(RootComponent);
+	m_BrokenMesh->SetupAttachment(RootComponent);
 	c_Bowl->SetupAttachment(RootComponent);
 	c_BowlBroken->SetupAttachment(RootComponent);
 	c_InsertedObject->SetupAttachment(RootComponent);

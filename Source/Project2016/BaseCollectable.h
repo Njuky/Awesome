@@ -50,12 +50,6 @@ public:
 	UPROPERTY(VisibleDefaultsOnly, Category = "Private")
 		APlayerController* playerControllerRef;
 
-//	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Eventually cut")
-//		bool bowl;
-
-//	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Eventually cut")
-//		bool flower;
-
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Default")
 		ABaseCollectable* m_repairObject;
 
@@ -64,9 +58,6 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Default")
 		USoundBase* m_sDrop;
-
-	//UPROPERTY(VisibleDefaultsOnly, Category = "Default")
-	//	UCapsuleComponent* CapsuleComponent;
 
 	UPROPERTY(VisibleAnywhere, Category = "Default")
 		class USphereComponent* SphereComponent;

@@ -52,6 +52,12 @@ public:
 	UPROPERTY(VisibleDefaultsOnly, Category = "Default")
 		class UStaticMeshComponent *c_InsertedObject;
 
+	UPROPERTY(VisibleDefaultsOnly, Category = "Default")
+		class USkeletalMeshComponent *m_NormalMesh;
+
+	UPROPERTY(VisibleDefaultsOnly, Category = "Default")
+		class USkeletalMeshComponent *m_BrokenMesh;
+
 	UPROPERTY(VisibleAnywhere, Category = "Default")
 		class USphereComponent* c_CollisionSphere;
 

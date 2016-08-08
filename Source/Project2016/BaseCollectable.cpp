@@ -183,6 +183,10 @@ void ABaseCollectable::SetMeshVisibility(bool visible)
 		return;
 
 	// If the actor has a broken Mesh, this will be set visible / invisible
+
+	if (!m_broken)
+		return;
+
 	if (C_BrokenMesh != nullptr) {
 		RootComponent->SetVisibility(!m_broken, true);
 		C_BrokenMesh->SetVisibility(m_broken, false);
