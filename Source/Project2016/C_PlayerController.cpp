@@ -7,11 +7,14 @@
 void AC_PlayerController::SetupInputComponent(){
 	Super::SetupInputComponent();
 	InputComponent->BindAction("Interact", IE_Pressed, this, &AC_PlayerController::Interact);
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Input!"));
 }
 
 void AC_PlayerController::Interact() {
 	if (!m_charref->IsValidLowLevel())
 		return;
+
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Interact!"));
 
 	// Drop Item
 	if (c_Inventory->IsValidLowLevel() && bCanInteract) {
