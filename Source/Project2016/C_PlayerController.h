@@ -158,6 +158,9 @@ public:
 		bool bCanInteract;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Default")
+		float m_range = 1000.0f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Default")
 		uint8 animationType;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Default")
