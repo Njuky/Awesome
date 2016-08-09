@@ -184,8 +184,18 @@ void ABaseCollectable::CheckTime(bool currentTime) {
 void ABaseCollectable::SetMeshVisibility(bool visible)
 {
 	RootComponent->SetVisibility(visible, true);
+
+	if (StaticMeshComponent != nullptr)
+		StaticMeshComponent->SetVisibility(visible, false);
+
+	if (m_NormalMesh != nullptr)
+		m_NormalMesh->SetVisibility(visible, false);
+
 	SetActorEnableCollision(visible);
 	SetActorHiddenInGame(false);
+
+	if (C_BrokenMesh == nullptr)
+		SetActorHiddenInGame(true);
 
 	if (!m_enabled)
 		return;
