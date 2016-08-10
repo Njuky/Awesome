@@ -243,8 +243,10 @@ ABaseCollectable* ABaseCollectable::InteractItem(ABaseCollectable* object, bool 
 		if (!object->IsValidLowLevel())
 			return nullptr;
 
-		if (object == m_repairObject) {
+		if (object == this)
+			return nullptr;
 
+		if (object == m_repairObject) {
 			if (m_sDrop != nullptr)
 				AudioMaster->PlaySound(m_sDrop);
 
