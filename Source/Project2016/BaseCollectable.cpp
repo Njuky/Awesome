@@ -105,6 +105,14 @@ void ABaseCollectable::Tick(float DeltaTime)
 		SetMeshVisibility(false);
 		return;
 	}
+
+	AC_PlayerController* tempController = Cast<AC_PlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
+	if (tempController == nullptr)
+		return;
+
+	if (GetDistanceTo(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0)) <= 500.0f)
+		tempController->c_TempInventory = this;
+
 }
 
 // Sets TempInventory if player begins Overlap
